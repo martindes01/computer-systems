@@ -1,0 +1,103 @@
+\documentclass[
+  11pt,
+  a4paper,
+  % titlepage,
+]{article}
+
+\title{Computer Systems}
+\author{Martin de Spirlet}
+\date{}
+
+% Set document geometry
+\usepackage[
+  a4paper,
+  margin = 1in,
+  % showframe,
+]{geometry} % Flexible and complete interface to document dimensions
+
+% \usepackage{xcolor} % Driver-independent color extensions for LaTeX and pdfLaTeX
+
+% \definecolor{custom}{HTML}{1155cc}
+
+% Set document font family
+% Set default font family to default sans-serif font
+\renewcommand{\familydefault}{\sfdefault}
+% Set default sans-serif font to Helvetica
+% \renewcommand{\sfdefault}{phv}
+
+% \usepackage{amsmath} % AMS mathematical facilities for LaTeX
+% \usepackage{blindtext} % Producing 'blind' text for testing
+\usepackage{booktabs} % Publication quality tables in LaTeX
+\usepackage[labelfont=bf,labelsep=period]{caption}[2018/05/01] % Customising captions in floating environments
+\usepackage[inline,shortlabels]{enumitem} % Control layout of itemize enumerate description
+% \usepackage{fancyhdr} % Extensive control of page headers and footers in LaTeX2
+% \usepackage[T1]{fontenc} % Standard package for selecting font encodings
+% \usepackage{graphicx} % Enhanced support for graphics
+\usepackage{listings} % Typeset source code listings using LaTeX
+\usepackage{mathtools} % Mathematical tools to use with amsmath
+\usepackage{multicol} % Intermix single and multiple columns
+\usepackage{multirow} % Create tabular cells spanning multiple rows
+% \usepackage{natbib} % Flexible bibliography support
+% \usepackage[super]{nth} % Generate English ordinal numbers
+\usepackage[skip=\glueexpr\baselineskip\relax]{parskip} % Layout with zero \parindent non-zero \parskip
+% \usepackage{pdfpages} % Include PDF documents in LaTeX
+% \usepackage{pgfplots} % Create normal/logarithmic plots in two and three dimensions
+% \usepackage{pgfplotstable} % Loads rounds formats and postprocesses numerical tables
+\usepackage[onehalfspacing]{setspace} % Set space between lines % setspace must be loaded before hyperref
+\usepackage{sfmath} % Sans-serif mathematics
+\usepackage[binary-units,group-digits=false]{siunitx} % A comprehensive (SI) units package
+% \usepackage{subcaption} % Support for sub-captions
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref} % Extensive support for hypertext in LaTeX % hyperref loaded by pdfx
+% \usepackage[nameinlink,noabbrev]{cleveref} % Intelligent cross-referencing % cleveref must be loaded after hyperref
+
+% Set list parameters (using enumitem package)
+\setlist{nosep}
+
+% Set listing parameters (using listings package)
+\lstset{
+  basicstyle = \ttfamily,
+  frame = single,
+}
+
+% Increase penalty for widows and orphans (maximum 10000)
+\widowpenalty = 10000
+\clubpenalty = 10000
+
+% Define math function commands
+\newcommand{\function}[2]{
+  \textup{#1}\!\left( #2 \right)
+}
+\newcommand{\functionsub}[3]{
+  \textup{#1}_{#2}\!\left( #3 \right)
+}
+\newcommand{\functionsubsup}[4]{
+  \textup{#1}_{#2}^{#3}\!\left( #4 \right)
+}
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+\maketitle
+
+\vspace*{\fill}
+
+\begin{table}[htp]
+  \centering
+  \begin{tabular}{rrl}
+    \toprule
+    Week & Unit & Title \\
+    \midrule
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\vspace*{\fill}
+\addvspace{1in}
+
+\clearpage
+
+\pagenumbering{arabic}
+
+\end{document}
