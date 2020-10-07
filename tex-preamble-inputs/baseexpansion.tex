@@ -1,0 +1,48 @@
+% from https://tex.stackexchange.com/a/96485
+% edited to remove mathtt
+
+% expandable loop (used to avoid scope problems in tabular cells with the
+% standard \loop)
+\def\boucle #1\repeat {#1\b@@cle {#1}\repeat \repeat }
+\def\b@@cle #1{\repeat #1\b@@cle {#1}}
+
+\makeatletter
+\newcount\@nn
+\newcount\@mm
+\newcount\@base
+\newcount\@baseminusone
+
+% please do not use this at home
+% #1 must be a counter name, not something expanding to a number.
+\def\@arabalpha #1{\ifcase #10\or1\or2\or3\or4\or5\or6\or7\or8\or9\or
+A\or B\or C\or D\or E\or F\or G\or H\or I\or J\or K\or L\or M\or N\or O\or
+P\or Q\or R\or S\or T\or U\or V\or W\or X\or Y\or Z\fi}
+
+\newcommand{\baseexpansion}[2][2]{% no negative numbers please!
+\def\@digits{}%
+\@base#1\relax \@baseminusone\@base\advance\@baseminusone-1
+\@nn #2\relax  % this is the number to be written in base #1
+%
+\ifnum\@baseminusone<36
+\def\onerow{#1\kern.1em\hbox{\vrule
+   \vtop {\hbox{\ \the\@nn}\kern.3ex\hrule height.1ex }} &%
+   \global\@mm\@nn \global\divide\@mm\@base
+   \multiply\@mm\@base \advance\@nn-\@mm
+   \the\@nn \xdef\@digits{\@arabalpha\@nn\@digits}}%
+\else
+\def\onerow{#1\kern.1em\hbox{\vrule
+   \vtop {\hbox{\ \the\@nn}\kern.3ex\hrule height.1ex }} &%
+   \global\@mm\@nn \global\divide\@mm\@base
+   \multiply\@mm\@base \advance\@nn-\@mm
+   \the\@nn \xdef\@digits{\the\@nn.\@digits}}%
+\fi
+%
+\leavevmode\oalign{$#2_{10}:$\hfil\cr
+      $\left.
+      \begin{tabular}{r|l}
+         \boucle \onerow \\ \ifnum\@nn>\@baseminusone\global\@nn\@mm \repeat
+      \end{tabular}\right\rbrace=
+      {\@digits}_{#1}$}}     % \hfil removed from the macro
+      % \mathtt{\@digits}_{#1}$}}     % \hfil removed from the macro
+
+\makeatother

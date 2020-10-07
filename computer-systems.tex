@@ -64,6 +64,9 @@
 \widowpenalty = 10000
 \clubpenalty = 10000
 
+% External inputs to preamble
+\input{tex-preamble-inputs/baseexpansion.tex}
+
 % Define math function commands
 \newcommand{\function}[2]{
   \textup{#1}\!\left( #2 \right)
@@ -89,6 +92,7 @@
     \toprule
     Week & Unit & Title \\
     \midrule
+    1 &  1 & Data Representation and Manipulation \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -99,5 +103,8 @@
 \clearpage
 
 \pagenumbering{arabic}
+
+\section{Data Representation and Manipulation}
+\input{unit-1/notes.tex}
 
 \end{document}
