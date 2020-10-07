@@ -1,0 +1,97 @@
+\subsection{Anatomy of a Computer System}
+
+A computer is a complex system (machine) that can be instructed to carry out sequences of arithmetic or logical operations automatically via computer programming.
+
+A computing device must be able to
+\begin{itemize}
+  \item load a program (input interface),
+  \item process instructions in the correct order (track progress, storage and decoding of instructions),
+  \item access data according to its instructions (local storage),
+  \item perform computations (calculation `engine'),
+  \item make decisions according to its computations (control mechanism), and
+  \item send results to an external device (output interface).
+\end{itemize}
+
+Thus, all computers, regardless of their implementing technology, have five basic subsystems.
+\begin{enumerate}
+  \item Memory
+  \item Control unit
+  \item Arithmetic logic unit (ALU)
+  \item Input unit
+  \item Output unit
+\end{enumerate}
+
+\subsubsection{Memory}
+
+Memory locations have finite capacity.
+Data may not fit in a memory location.
+Blocks of four or eight bytes are used so often as a unit that they are known as memory `words`.
+
+Computer memory is known as random access memory (RAM).
+This simply means that the computer can refer to memory locations in any order.
+
+\subsubsection{Control unit}
+
+The control unit of a computer is where the fetch/execute cycle occurs.
+It fetches a machine instruction from memory and performs other operations of the fetch/execute cycle accordingly.
+
+\subsubsection{Arithmetic Logic Unit (ALU)}
+
+The arithmetic logic unit carries out each machine instruction with a separate circuit.
+It contains various circuits for arithmetic and logic, such as addition, subtraction, multiplication, comparison and logic gates.
+
+\subsubsection{Input and Output Units}
+
+These components are the wires and circuits through which information travels into and out of a computer.
+Without input or output, a computer is useless.
+
+Peripherals connect to the computer through input/output (I/O) ports.
+They are not considered parts of the computer.
+
+\subsection{The Fetch-Execute Cycle}
+
+A program is loaded into memory and the address of the first instruction is placed in the program counter (PC).
+
+The fetch-execute cycle proceeds as follows.
+\begin{enumerate}
+  \item Instruction fetch (IF)
+  \item Instruction decode (ID)
+  \item Data fetch (DF) / operand fetch (OF)
+  \item Instruction execution (EX)
+  \item Result return (RR) / store (ST)
+\end{enumerate}
+
+\subsubsection{Instruction Fetch (IF)}
+
+The instruction at the memory address given by the PC is copied to the instruction register of the control unit.
+The PC is incremented to point at the next instruction to be fetched.
+
+\subsubsection{Instruction Decode (ID)}
+
+The ALU is prepared for the operation specified by the instruction.
+The decoder finds the addresses of the instruction operands.
+These addresses are passed to the ALU circuit that fetches the operands from memory in the next stage.
+The decoder also finds the destination address for the result.
+This is passed to the RR circuit.
+
+\subsubsection{Data fetch (DF)}
+
+The operands are copied from the specified memory addresses into the ALU circuits.
+The data remains in memory and is not destroyed.
+
+\subsubsection{Instruction Execute (EX)}
+
+The ALU performs the operation on its operands.
+The result is held in its circuitry.
+
+\subsubsection{Result Return (RR)}
+
+The result of the EX stage is stored at the specified destination memory address.
+The cycle begins again.
+
+\subsection{Machine Instructions}
+
+A computer ``knows'' very few instructions.
+The decoder hardware in the control unit recognises, and the ALU performs, of the order of \num{100} instructions.
+Everything that a computer does must be reduced to some combination of these primitive instructions.
+Computers can carry out millions of these instructions per second.
