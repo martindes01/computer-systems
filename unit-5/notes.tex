@@ -1,0 +1,140 @@
+\subsection{How Subroutines Work}
+
+\subsubsection{Call and Return Instructions}
+
+When execution jumps from line \( n \) to a subroutine, there needs to be a way to instruct the computer to continue execution on line \( n + 1 \) once the subroutine is complete.
+
+Two hypothetical instructions that could be used to achieve this are \texttt{call}, which jumps to the subroutine and stores the return address (the current PC value) somewhere suitable, and \texttt{ret}, which reads the return address from where it was stored and loads it into the PC.
+
+\subsubsection{Method~1 --- Storing Return Address as First Byte}
+
+Using this method, the return address is stored as the first byte of the subroutine.
+The instruction \texttt{call N} would store the return address at location \( N \) and begin executing the subroutine at location \( N + 1 \).
+The instruction \texttt{ret N} would load the return address stored at location \( N \) into the PC.
+
+The disadvantage of this method is that only one return address can be stored for each subroutine.
+Consequently, a subroutine could not call itself, as this would require two return addresses (one for the original call and another for the recursive call).
+
+FORTRAN --- the first commercially available high-level programming language --- disallowed recursion in order to implement this method.
+
+\subsubsection{Introduction to Stacks}
+
+A stack is a data structure that can flexibly store a variable number of bytes.
+Stacks employ `last in, first out' (LIFO) semantics.
+Elements are `pushed' to or `popped' from the top of the stack.
+A stack pointer (SP) is a CPU register that points to the top of the stack.
+It is not necessary to know where the bottom of the stack is, but programmers must make sure they do not attempt to pop from an empty stack.
+
+When a value is pushed to the stack, it is written to memory at the address given by the SP.\@
+The SP is then incremented.
+
+When a value is popped from the stack, the SP is decremented, then the value is read from memory at the address given by SP.\@
+Popped values remain in memory and are later overwritten by pushed values.
+
+\subsubsection{Method~2 --- Storing Return Address on a Stack}
+
+Using this method, the return address is pushed to a stack when the subroutine is entered.
+The instruction \texttt{call N} would push the return address to the stack and begin executing the subroutine at location \( N \).
+The instruction \texttt{ret} would pop the return address from the stack and load it into the PC.
+
+This method allows multiple return addresses to be stored and, therefore, makes recursion possible.
+
+\subsubsection{Saving Registers}
+
+A subroutine may need to use CPU registers in its calculations.
+However, the previous register values will need to be restored when execution returns to the caller.
+
+A common solution to this problem is to push all register values to the stack at the beginning of a subroutine (after the return address has been pushed) and to pop the register values from the stack at the end of the subroutine (before the return address is popped).
+Register values are popped in reverse order.
+
+The return address and saved registers are known as a `stack frame'.
+
+\subsection{Stacks for Calculations}
+
+\subsubsection{Reverse Polish Notation (RPN)}
+
+Reverse Polish notation (RPN) or postfix notation is a method of writing calculations in which operators follow their operands and the order of operations is as written (no brackets are needed).
+This differs from standard infix notation, in which operators are written between or around their operands and the order of operations is determined by precedence.
+
+RPN is a useful way of implementing calculations with stacks.
+If the next item in the input stream is a value or variable, it is pushed to the operand stack.
+If the next item is an operation, the relevant number of operands is popped from the operand stack, the operation is performed, and the result is pushed to the operand stack.
+
+The following infix calculation and postfix calculation are equivalent.
+
+\begin{equation*}
+  \left( 5 + 2 \right) \times \sqrt{ x \times x + y \times y } + 8
+\end{equation*}
+
+\begin{equation*}
+  5 \> 2 + x \> x \times y \> y \times + \sqrt{\>} \times 8 \> +
+\end{equation*}
+
+One notation that shows the effect of an operation, such as subtraction, on a stack is as follows.
+
+\begin{equation*}
+  \ldots, \textnormal{val1}, \textnormal{val2} \quad \rightarrow \quad \ldots, \textnormal{val1} - \textnormal{val2}
+\end{equation*}
+
+Java bytecode uses operand stacks for calculations.
+In Java, each method call has its own operand stack.
+
+\subsubsection{Stack Machines}
+
+Stack machines use a return stack for subroutine return, and an operand stack for RPN calculations.
+Registers are not needed for calculations.
+This allows more space for calculations, and machine instructions do not need to specify registers.
+However, it is difficult to know where things are on the stack.
+
+The term `operand' could refer either to the byte(s) after the instruction opcode in memory, or the entries in the operand stack.
+
+\subsection{Bitwise Boolean Operations}
+
+The XOR operation is an exclusive OR.\@
+It returns true only if exactly one operand is true.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Truth tables.}
+  \begin{tabular}{ccccc}
+    \toprule
+    A & B & A AND B & A OR B & A XOR B \\
+    \midrule
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 1 & 1 \\
+    1 & 0 & 0 & 1 & 1 \\
+    1 & 1 & 1 & 1 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Conditional and Unconditional Jumps}
+
+No stacks are used when an unconditional jump is executed.
+Conditional jumps are only executed if a condition is true; if the condition is false, execution continues to the next instruction.
+
+Java bytecode contains six comparisons that are used in conditional jump instructions.
+There are two types of conditional jump instruction.
+Jump instructions of the form \texttt{ifXX} pop one value from the stack and compare it to zero.
+Jump instructions of the form \texttt{if\_cmpXX} pop two values from the stack and compare them to each other.
+
+For example, \texttt{ifeq N} would pop a value from the stack and jump to location \( N \) if the value is zero.
+The instruction \texttt{if\_cmpeq N} would pop two values from the stack and jump to location \( N \) if they are equal.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Conditional jump instructions.}
+  \begin{tabular}{clll}
+    \toprule
+    \multicolumn{2}{c}{Comparison} & \multicolumn{2}{c}{Instruction} \\
+    Symbol & Mnemonic & \texttt{ifXX} & \texttt{if\_cmpXX} \\
+    \midrule
+    \( = \)    & \texttt{eq} & \texttt{ifeq} & \texttt{if\_cmpeq} \\
+    \( < \)    & \texttt{lt} & \texttt{iflt} & \texttt{if\_cmplt} \\
+    \( \leq \) & \texttt{le} & \texttt{ifle} & \texttt{if\_cmple} \\
+    \( \neq \) & \texttt{ne} & \texttt{ifne} & \texttt{if\_cmpne} \\
+    \( > \)    & \texttt{gt} & \texttt{ifgt} & \texttt{if\_cmpgt} \\
+    \( \geq \) & \texttt{ge} & \texttt{ifge} & \texttt{if\_cmpge} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
