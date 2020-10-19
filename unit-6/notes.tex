@@ -1,0 +1,260 @@
+\subsection[Execution on the JVM]{Execution on the Java Virtual Machine}
+
+The \texttt{javac} compiler compiles Java source code in \texttt{.java} files to intermediate-level Java bytecode in \texttt{.class} files.
+As long as there is a JVM on another platform, the bytecode can be run on that platform without recompilation.
+This feature is known as `portability'.
+
+The JRE loads Java bytecode files, verifies their internal consistency and executes their methods using the JVM.
+Different CPUs or operating systems can run the same Java bytecode but use different JREs.
+
+\subsection{Stack Frames}
+
+Every time a method is called in Java, a stack frame is constructed for it.
+Each frame has
+\begin{itemize}
+  \item a reference to the frame of its calling method,
+  \item space for local variables,
+  \item space for an operand stack
+  \item a PC and SP (for the JVM, not the CPU), and
+  \item other items.
+\end{itemize}
+
+\subsubsection{Variable and Operand Storage}
+
+All local variables and operand stack entries are stored as \num{4}~bytes.
+The \texttt{long} and \texttt{double} data types, which need \num{8}~bytes, are stored as two consecutive entries.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Storage of data types.}
+  \begin{tabular}{lrrr}
+    \toprule
+    Data type & \multicolumn{2}{c}{Size} & Slots \\
+    \cmidrule(l{0.25em}r{0.25em}){2-3}
+    & / \si{\bit} & / \si{\byte} & \\
+    \midrule
+    \texttt{bool}   & 1 &   & 1 \\
+    \texttt{byte}   &   & 1 & 1 \\
+    \texttt{char}   &   & 2 & 1 \\
+    \texttt{short}  &   & 2 & 1 \\
+    \texttt{int}    &   & 4 & 1 \\
+    \texttt{float}  &   & 4 & 1 \\
+    reference       &   & 4 & 1 \\
+    \texttt{long}   &   & 8 & 2 \\
+    \texttt{double} &   & 8 & 2 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\newpage
+
+\subsubsection{Local Variables}
+
+In the context of Java bytecode, local variables include:
+\begin{enumerate}
+  \item \texttt{this} reference (for non-static methods only)
+  \begin{itemize}
+    \item a reference to the object on which the method was called
+    \item stored as local variable in slot~\num{0}
+  \end{itemize}
+  \item Parameters of the method
+  \begin{itemize}
+    \item stored from slot~\num{0} onwards for static methods
+    \item stored from slot~\num{1} onwards for non-static methods
+  \end{itemize}
+  \item Variables declared inside the method
+  \begin{itemize}
+    \item stored in slots immediately after parameters
+  \end{itemize}
+\end{enumerate}
+
+Instance variables and class (static) variables are not stored as local variables since they are defined outside of methods.
+
+\subsubsection{Slot Numbers}
+
+Java bytecode does not refer to local variables by their identifiers in the source code.
+Instead, it refers to them by their slot numbers.
+A local variable of the \texttt{long} or \texttt{double} data types takes the number of the first of its pair of slots.
+
+\begin{figure}[htp]
+  \centering
+  \begin{tabular}{c || c|c|c|c || c|c|c|c || c|c|c|c || c || c || c}
+    \hline
+    \ldots &
+    \hphantom{1} & \hphantom{2} & \hphantom{3} & \hphantom{4} &
+    \hphantom{1} & \hphantom{2} & \hphantom{3} & \hphantom{4} &
+    \hphantom{1} & \hphantom{2} & \hphantom{3} & \hphantom{4} &
+    \ldots &
+    operand stack &
+    \ldots \\
+    \hline
+    \multicolumn{1}{c||}{} &
+    \multicolumn{4}{c||}{slot 0} &
+    \multicolumn{4}{c||}{slot 1} &
+    \multicolumn{4}{c||}{slot 2} &
+    \multicolumn{1}{c}{} &
+    \multicolumn{1}{c}{} &
+    \multicolumn{1}{c}{} \\
+  \end{tabular}
+  \caption*{Local variable slots in the stack frame.}
+\end{figure}
+
+\subsubsection{Stack Overflow}
+
+The operand stack can never overflow.
+The Java compiler calculates exactly how much space is required and the loader checks each method to verify that no operand stack underflow or overflow is possible.
+Operand stack overflow is different from stack overflow, which occurs when a new frame is needed, but there is not sufficient memory.
+
+\subsection{Java Bytecode Instructions}
+
+Each Java bytecode instruction takes up at least one byte (for its opcode).
+It may also have one or more operand bytes.
+For each opcode, there is a corresponding mnemonic.
+
+A single operand may consist of multiple bytes.
+In this case, the operand is stored with its most significant byte first (in the smaller address).
+This order is known as `big endian'.
+
+\subsubsection{Arithmetic}
+
+Each arithmetic instruction has a prefix letter that denotes the data type on which it operates.
+For example, the \texttt{iadd} instruction pops two entries from the operand stack, adds them as if they are of the type \texttt{int}, and pushes them back onto the stack.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Mnemonic prefixes.}
+  \begin{tabular}{lll}
+    \toprule
+    Data type & Prefix & Addition \\
+    \midrule
+    \texttt{byte}   & \texttt{b} & \\
+    \texttt{short}  & \texttt{s} & \\
+    \texttt{int}    & \texttt{i} & \texttt{iadd} \\
+    \texttt{long}   & \texttt{l} & \texttt{ladd} \\
+    \texttt{float}  & \texttt{f} & \texttt{fadd} \\
+    \texttt{double} & \texttt{d} & \texttt{dadd} \\
+    reference       & \texttt{a} & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Errors are likely to occur if an instruction is used on the wrong data type.
+For example, calling \texttt{fadd} on \texttt{int} entries will result in the wrong answer since the instruction expects entries in floating point representation.
+If there is only one operand on the stack and the instruction expects two, operand stack underflow will occur.
+This can occur when \texttt{ladd} is called on \texttt{int} entries.
+
+No checks are performed during execution.
+The JRE verifies the bytecode when the class is loaded.
+This includes checking that types are used consistently.
+
+\subsubsection{Pushing}
+
+The \texttt{bipush <1\_byte\_operand>} instruction has two prefixes: \texttt{b} for \texttt{byte} and \texttt{i} for \texttt{int}.
+This instruction sign extends its \texttt{byte} operand (\SI{1}{\byte}) to an \texttt{int} value (\SI{4}{\byte}) and pushes the result to the operand stack.
+Similarly, there exists an \texttt{sipush <2\_byte\_operand>} instruction to push a \texttt{short} to the operand stack as an \texttt{int}.
+
+There exist seven instructions for pushing common integer constants to the operand stack that do not require an operand.
+Instructions that take no operand help to save space in the bytecode.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Instructions for pushing common integer constants.}
+  \begin{tabular}{lr}
+    \toprule
+    Instruction & Value pushed \\
+    \midrule
+    \texttt{iconst\_m1} & -1 \\
+    \texttt{iconst\_0}  &  0 \\
+    \texttt{iconst\_1}  &  1 \\
+    \texttt{iconst\_2}  &  2 \\
+    \ldots & \ldots \\
+    \texttt{iconst\_5}  &  5 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Load instructions of the form \texttt{iload <slot\_number>} push local variables (indicated by their slot numbers) onto the operand stack.
+There are special load instructions that take no operand for pushing values stored in common slots to the operand stack (\texttt{iload\_0}, \texttt{iload\_1}, \texttt{iload\_2}, \texttt{iload\_3}).
+
+\subsubsection{Popping}
+
+Store instructions pop entries from the operand stack into local variable slots.
+For example, \texttt{istore <slot\_number>} or \texttt{istore\_2}.
+
+\subsubsection{Jumps}
+
+In Java bytecode, the source and destination of a jump must be within the same method.
+It is not possible to jump to another method.
+
+Unconditional jumps are achieved with the \texttt{goto <2\_byte\_offset>} instruction.
+The operand is an \SI{2}{\byte} offset that is added to the address of the instruction to calculate the address of the next instruction to execute.
+There exists a version of this instruction that takes a \SI{4}{\byte} operand to allow for larger jumps: \texttt{goto\_w <4\_byte\_offset>}.
+
+Conditional jumps are achieved with instructions of the form \texttt{ifeq <offset>} and \texttt{if\_icmpeq <offset>}.
+
+\subsection{Call and Return}
+
+\subsubsection{The Stack}
+
+If method \texttt{B} calls static method \texttt{A(p0, p1)}, and this method returns a result:
+\begin{enumerate}
+  \item method~\texttt{B} calculates the arguments on its operand stack,
+  \item a stack frame is constructed for method~\texttt{A},
+  \begin{itemize}
+    \item the arguments are popped from the operand stack of method~\texttt{B},
+    \item the values are used to initialise the local variables \texttt{p0} and \texttt{p1} for method~\texttt{A},
+  \end{itemize}
+  \item method~\texttt{A} calculates the result on its stack frame
+  \item the result is pushed to the operand stack of method~\texttt{B}, and
+  \item execution returns to method~\texttt{B}, discarding the stack frame of method~\texttt{A}.
+\end{enumerate}
+
+On the operand stack of method~\texttt{B}, this has the effect of
+
+\begin{equation*}
+  \ldots, \textnormal{p0}, \textnormal{p1} \quad \rightarrow \quad \ldots, \textnormal{result}
+\end{equation*}
+
+Each frame has its own PC.
+While method~\texttt{A} is executed, its PC is used.
+When execution returns to method~\texttt{B}, it resumes with its old PC value.
+The local variables of method~\texttt{B} are unchanged by method~\texttt{A}.
+
+Linked frames have the effect of a return stack.
+A chain of linked frames in the JVM is officially known as a stack.
+
+\subsubsection{Runtime Constant Pool}
+
+The class variables, instance variables and methods of a class may be used by other classes.
+Since classes are compiled separately, the compiler does not know the address of these items in other classes.
+Hence, the class, source file and bytecode file must share the same name to create a `symbolic reference'.
+
+In addition to class variables, instance variables and method definitions, each class in java has a runtime constant pool that contains read-only constants used in the class.
+This includes literal constants, symbolic references to methods and their classes, types and more.
+
+Each pool entry has an index.
+Each stack frame includes a pointer to the constant pool of its class in its space for `other items'.
+
+\subsubsection{Static Method Calls}
+
+Static methods are called using the \texttt{invokestatic <2\_byte\_index>} instruction.
+The operand is an index in the runtime constant pool of the class of the current method.
+The indexed constant pool entry is a symbolic reference to the requested class and method.
+
+The JVM uses this information to find the address of the class, the size needed for the new frame, and the address of the bytecode for the method.
+
+\subsubsection{Method Returns}
+
+The return instruction for void methods is \texttt{return}.
+This has no effect on the operand stack of the caller.
+
+For methods that return a result, the instruction is of the form \texttt{ireturn}.
+This pops the result from the operand stack of the current frame and pushes it to the operand stack of the caller.
+
+After either of these return instructions, the current frame is discarded and execution continues on the frame of the caller, resuming from its PC.
+
+\subsection{Java Disassembler}
+
+The Java `disassembler' (\texttt{javap}) converts Java bytecode to mnemonics with the \texttt{-c} option.
+For example, \texttt{MyClass.class} can be viewed with \texttt{javap -c MyClass}.
+Jump instruction operands in disassembler output show the destination instruction address rather than the offset used in the bytecode.
