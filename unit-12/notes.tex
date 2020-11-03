@@ -1,0 +1,128 @@
+\subsection{Basic Concepts}
+
+\subsubsection{CPU and I/O Burst Cycle}
+
+Process scheduling is the process of selecting the next process in the ready queue to be executed by the CPU.
+Scheduling decisions take place when events interrupt the execution of a process.
+Such events include clock interrupts, I/O interrupts, system calls and signals.
+
+Process execution is a cycle of CPU execution and I/O waiting.
+Processes on a batch system are CPU-bound, whereas processes on an interactive system are I/O-bound with very short CPU bursts.
+When a process is in an I/O burst, the CPU becomes idle and the short-term scheduler must select another process from the ready queue.
+The ready queue is not necessarily a FIFO queue; it may be a priority queue, tree or unordered linked list.
+
+\subsubsection{Dispatcher}
+
+The dispatcher is the module that gives control of the CPU to the process selected by the short-term scheduler.
+This involves switching context, switching to user mode and jumping to the correct location stored in the PCB of the process in order to resume execution.
+The dispatcher must be as fast as possible since it is invoked at every process switch.
+The time taken by the dispatcher to stop one process and start another is known as `dispatch latency'.
+
+\subsubsection{Levels of Scheduling}
+
+The long-term scheduler is responsible for admitting new processes to the ready queue.
+The short-term scheduler is responsible for selecting the next process to be given control of the CPU.
+The mid-term scheduler is responsible for moving processes between suspended and non-suspended states.
+
+A non-preemptive scheduler allows an executing process to continue execution until it terminates, releases the CPU voluntarily (cooperative scheduling) or is blocked due to an event such as an I/O interrupt.
+A preemptive scheduler may stop an executing process due to a clock interrupt (time slice expired) or when a process with a higher priority becomes ready.
+
+\subsection{Scheduling Criteria}
+
+Scheduling algorithms are designed to maximise or minimise different parameters.
+OS parameters to be maximised include
+\begin{itemize}
+  \item CPU utilisation, and
+  \item throughput --- the number of processes that complete execution per unit time.
+\end{itemize}
+User concerns to be minimised include
+\begin{itemize}
+  \item turnaround time --- the total time to execute a process to completion,
+  \item waiting time --- the time a process spends in the ready queue, and
+  \item response time --- the time between the submission of a new process and its first CPU burst (also known as latency).
+\end{itemize}
+
+\subsection{Scheduling Algorithms}
+
+\subsubsection{First Come First Serve (FCFS)}
+
+First come first serve (FCFS) is the simplest scheduling algorithm.
+Processes are given control of the CPU in the order that they request it.
+This is implemented with a FIFO ready queue.
+When a process enters the ready queue, its PCB is pushed to the tail.
+When the CPU becomes free, it is allocated to the process given by the PCB popped from the head of the queue.
+
+Using this algorithm, the average process waiting time can vary greatly.
+If a long process arrives before a short process, the waiting time for the second process will be long.
+If the short process arrives first, the second process will have a short waiting time.
+
+\subsubsection{Shortest Job First (SJF)}
+
+Using the shortest job first (SJF) scheduling algorithm, each process is associated with an estimate of the length of its next CPU bust.
+When the CPU becomes available, it is assigned to the process that has the shortest estimated next CPU burst.
+If two processes are estimated to have next CPU bursts of the same length, FCFS is used to choose between them.
+A more accurate name for this algorithm would be `shortest next CPU burst first'.
+
+The SJF scheduling algorithm can be proven to be optimal.
+It gives the minimum average waiting time for a given set of processes.
+This works because scheduling a short process before a long process decreases the waiting time of the short process more than it increases the waiting time of the long process.
+Thus, the average waiting time decreases.
+
+However, the algorithm is difficult to implement since there is no way to know the exact length of the next CPU burst.
+Instead, the length of the next CPU burst of a process is estimated by an exponential average of the measured lengths of its previous CPU bursts.
+The predicted length \( \tau_{n + 1} \) of the next (\( \left( n + 1 \right) \)th) CPU burst is given by the following iterative formula in terms of the measured length \( t_n \) of the previous (\( n \)th) CPU burst and a weighting factor \( \alpha \).
+
+\begin{equation*}
+  \tau_{n + 1} = \alpha t_n + \left( 1 - \alpha \right) \tau_n
+\end{equation*}
+
+Commonly, the weighting factor \( \alpha \) is set to \num{0.5}.
+Thus, if the predicted and actual lengths of the \( n \)th CPU burst are \SIlist{10;6}{\milli\second}, respectively, the predicted length of the \( \left( n + 1 \right) \)th CPU burst would be \SI{8}{\milli\second}.
+
+\subsubsection{Shortest Remaining Time First (SRTF)}
+
+SJF can be either preemptive or non-preemptive.
+If the length of the next CPU burst of a newly submitted process is shorter than the remaining CPU burst of the currently executing process, the preemptive SJF would switch the two processes to minimise the average waiting time, whereas the non-preemptive SJF would allow the current process to finish its CPU burst.
+
+The preemptive SJF scheduling algorithm is known as the `shortest remaining time first' (SRTF) scheduling algorithm.
+
+\subsubsection{Priority Scheduling}
+
+The SJF scheduling algorithm is a special case of the general priority scheduling algorithm.
+A priority is associated with each process and the CPU is allocated to the process with the highest priority.
+Priorities are indicated by a fixed range of numbers.
+Lower numbers are used for high priorities.
+Processes with equal priorities are scheduled using FCFS.
+
+Priorities can be defined by internal criteria, such as time limits, memory requirements and number of open files, or external criteria, such as process importance, funds paid for computation or political factors.
+
+Preemptive priority scheduling will switch processes if a newly submitted process has a higher priority than the current process.
+Non-preemptive priority scheduling would simply place that process at the head of the priority queue.
+
+Priority scheduling can result in the indefinite blocking or starvation of low-priority processes if the system receives a steady stream of processes with higher priority.
+These processes may eventually run after a very long waiting time, or may be lost if the system crashes before that point.
+This can be solved by increasing priority with age.
+
+\subsubsection{Round-Robin (RR)}
+
+The round-robin (RR) scheduling algorithm is designed especially for time-sharing systems.
+It is similar to FCFS, but uses preemption to enable the switching of processes.
+A circular ready queue and small `time quantum' or `time slice' are used.
+The CPU is allocated to each process in the queue for a time interval of up to one time quantum.
+The ready queue is treated as a FIFO queue.
+
+The scheduler sets a timer to interrupt the CPU after one time quantum and dispatches the first process in the ready queue.
+If the process has a CPU burst length of less than one time quantum, the process will release the CPU voluntarily.
+Otherwise, the process is interrupted after one time quantum, resulting in a context switch to the second process.
+The first process is pushed to the tail of the ready queue.
+
+If there are \( n \) processes in the ready queue and the time quantum is \( q \), each process is given \( \frac{1}{n} \) of the CPU time in bursts of at most \( q \).
+Each process must wait no longer than \( \left( n - 1 \right) q \) until its next CPU burst.
+For example, in a queue of five processes with a time quantum of \SI{20}{\milli\second}, each process is given up to \SI{20}{\milli\second} of CPU time every \SI{100}{\milli\second} or less, resulting in a waiting time of no more than \SI{80}{\milli\second} between CPU bursts.
+
+The performance of the RR scheduling algorithm depends heavily on the size of the time quantum.
+If the time quantum is longer than the process length, the algorithm would be no different from FCFS.
+If the time quantum is too short, there would be a large number of expensive context switches.
+Ideally, the time quantum should be much larger than the context switch time.
+If the context switch time is \( n \)\si{\percent} of the time quantum, approximately \( n \)\si{\percent} of CPU time would be devoted to context switching.
+Modern systems typically have time quanta between \SIlist{10;100}{\milli\second} and context switches of less than \SI{10}{\micro\second}.
