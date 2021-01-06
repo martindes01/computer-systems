@@ -1,0 +1,113 @@
+\subsection{The von~Neumann Architecture}
+
+\subsubsection{Central Processing Unit (CPU)}
+
+The central processing unit (CPU) consists of a control unit, ALU and registers.
+These registers include
+\begin{itemize}
+  \item the program counter (PC) (holds the address of the next instruction),
+  \item the instruction register (holds the instruction currently being decoded or executed),
+  \item the address register (holds a memory address from which data will be fetched, or to which data will be returned), and
+  \item the accumulator (holds temporarily the results of ALU computations).
+\end{itemize}
+
+\subsubsection{System Bus}
+
+The system bus includes
+\begin{itemize}
+  \item a control bus (carries commands from the CPU and returns status signals from devices),
+  \item an address bus (carries information about the device with which the CPU is communicating, namely physical memory addresses), and
+  \item a data bus (carries the data being processed).
+\end{itemize}
+
+\subsubsection{Memory}
+
+In the von~Neumann architecture, the memory contains both program instructions and data.
+
+\subsubsection{Clock}
+
+A clock cycle is a signal that oscillates between high and low.
+It is used to coordinate actions.
+The rate of the fetch-execute cycle is determined by the clock.
+Instructions begin execution on the rising edge of the signal.
+The time between rising edges is known as the `clock period'.
+The time between the rising and falling edges of the signal is known as the `clock width'.
+The number of clock cycles per second is used to determine the speed of a CPU.
+
+Modern computers attempt to start an instruction on each clock tick.
+Since each stage of the fetch-execute cycle is handled by separate circuitry, the fetch unit is freed to start the next instruction before the previous instruction is complete.
+This process is known as `pipelining'.
+When the pipeline is filled, five instructions are in process at a time, each at a different stage of the fetch-execute cycle
+Additionally, one instruction is finished on each clock tick, making it appear as though the computer is running one instruction per tick.
+
+\subsection{The Harvard Architecture}
+
+The main difference between the von~Neumann and Harvard architectures is their storage of instructions and data in memory.
+
+A von~Neumann (or `stored-program') machine stores its instructions and data in a shared memory.
+This means that an instruction fetch and a data operation cannot occur at the same time because they share a common bus.
+This is known as the `von~Neumann bottleneck' and can impinge on the performance of the system.
+However, the architecture allows for self-modifying code that can tune its performance at runtime.
+
+A Harvard machine stores its instructions and data in separate memories.
+This makes the machine more complex, but allows instruction fetch and data operation to occur at the same time.
+
+\subsection{MIPS R4000}
+
+MIPS~R4000 uses the modified Harvard architecture.
+Instructions and data are stored in the same memory (as in von~Neumann), but they have separate interfaces (as in Harvard).
+
+MIPS~R4000 was one of the first \SI{64}{\bit} microprocessors.
+It features integrated caches (primary on-chip and secondary off-chip), an integrated floating point unit and a deep pipeline.
+It uses MIPS~III --- a compact instruction set with a regular format --- which makes it easy to convert from high-level code to machine code.
+
+\subsubsection{Registers}
+
+The CPU contains 32 registers denoted \texttt{\$0}--\texttt{\$31} (or \texttt{r0}--\texttt{r31}).
+The registers can be either \SIlist[list-pair-separator={ or }]{32;64}{\bit} wide, depending on the mode of operation.
+\texttt{\$0} (\texttt{r0}) always stores zero.
+\texttt{\$31} (\texttt{r31}) is the link register used by jump and link instructions.
+It should not be used by other instructions.
+
+The ALU takes input from up to two registers and sends output to registers only.
+
+\subsubsection{Deep Pipeline}
+
+The typical MIPS pipeline consists of the following five stages.
+\begin{enumerate}
+  \item Instruction fetch (IF)
+  \item Instruction decode (ID) and register fetch (RF)
+  \item Execute (EX)
+  \item Memory access (MEM)
+  \item Write back (WB)
+\end{enumerate}
+
+MIPS~R4000 is super-pipelined; its pipeline contains eight stages rather than the regular five.
+The additional stages exist due to the extension of the IF and MEM stages to account for cache overheads.
+When the pipeline is full, eight instructions are in process at a time --- i.e.\ the pipeline is eight-deep.
+
+\subsection{Assembly Language}
+
+Binary is the only form in which a computer can be given instructions.
+Computers can be programmed to translate instructions expressed in other forms into binary code.
+This is known as `assembly'.
+
+Assembly language is a human-readable alternative to machine language.
+A computer can scan assembly code and convert words to binary.
+The binary is assembled into instructions.
+
+High-level languages are compiled to assembly language, which is then assembled into binary.
+
+\subsection{Instruction Sets}
+
+Every machine has a unique instruction set architecture (ISA).
+This is the set of primitive instructions that the CPU can execute.
+MIPS~R4000 uses the MIPS~III ISA.\@
+Each MIPS~III instruction has a \SI{32}{\bit} representation.
+It can be represented as human-readable assembly code, or binary machine code.
+There are three types of MIPS~III instruction.
+\begin{description}
+  \item[I-type] requires one or two registers and an operand.
+  \item[R-type] requires three registers.
+  \item[J-type] requires an operand.
+\end{description}
