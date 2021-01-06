@@ -1,0 +1,245 @@
+\subsection{Binary}
+
+Computers consist of a collection of switches called transistors, which can either be on or off.
+This leads to binary representation, where off is \num{0} and on is \num{1}.
+All data and instructions are stored in binary.
+Binary digits are known as `bits'.
+It is possible to build computers that use other number systems, but it is less expensive and more reliable to use basic components with only two states.
+
+\subsection{Characters}
+
+Characters are represented as binary values using text encoding schemes such as ASCII and Unicode.
+Modern schemes support internationalisation and tend to use \SIlist[list-final-separator={ or }]{8;16;32}{\bit} to encode characters.
+Strings are sequences of characters.
+
+\subsection{Number Bases}
+
+\subsubsection{Decimal to Binary, Octal and Hexadecimal}
+
+\begin{center}
+  \baseexpansion[2]{234} \quad \baseexpansion[8]{234} \quad \baseexpansion[16]{234}
+\end{center}
+
+\subsubsection{Binary, Octal and Hexadecimal to Decimal}
+
+\vspace{-\baselineskip}
+
+\begin{multicols}{3}
+
+  \begin{align*}
+    {101011}_{2} : & \\
+    1 \times 2 ^ 0 &=             \hphantom{00}1             \\
+    1 \times 2 ^ 1 &=             \hphantom{00}2             \\
+    0 \times 2 ^ 2 &=             \hphantom{00}0             \\
+    1 \times 2 ^ 3 &=             \hphantom{00}8             \\
+    0 \times 2 ^ 4 &=             \hphantom{00}0             \\
+    1 \times 2 ^ 5 &= \underline{\hphantom{0}32\hphantom{0}} \\
+                   &=           {\hphantom{0}43}_{10}        \\
+  \end{align*}
+
+  \columnbreak
+
+  \begin{align*}
+    {724}_{8} : & \\
+    4 \times 8 ^ 0 &=            \hphantom{000}4              \\
+    2 \times 8 ^ 1 &=            \hphantom{00}16              \\
+    7 \times 8 ^ 2 &= \underline{\hphantom{0}448\hphantom{0}} \\
+                   &=           {\hphantom{0}468}_{10}        \\
+  \end{align*}
+
+  \columnbreak
+
+  \begin{align*}
+    \text{ABC}_{16} : & \\
+    \text{C} \times 16 ^ 0 &=             \hphantom{00}12              \\
+    \text{B} \times 16 ^ 1 &=             \hphantom{0}176              \\
+    \text{A} \times 16 ^ 2 &= \underline{\hphantom{0}2560\hphantom{0}} \\
+                           &=           {\hphantom{0}2748}_{10}        \\
+  \end{align*}
+\end{multicols}
+
+\clearpage
+
+\subsubsection{Binary to Octal and Octal to Binary}
+
+\vspace{-\baselineskip}
+
+\begin{multicols}{2}
+
+  \begin{align*}
+    {1011010111}_{2} = {1327}_{8} : \\
+    \hphantom{}1\hphantom{\ }011\hphantom{\ }010\hphantom{\ }111 \\
+    \hphantom{}1\hphantom{\ 00}3\hphantom{\ 00}2\hphantom{\ 00}7 \\
+  \end{align*}
+
+  \columnbreak
+
+  \begin{align*}
+    {705}_{8} = {111000101}_{2} : \\
+    \hphantom{00}7\hphantom{\ 00}0\hphantom{\ 00}5 \\
+    \hphantom{}111\hphantom{\ }000\hphantom{\ }101 \\
+  \end{align*}
+
+\end{multicols}
+
+\subsubsection{Binary to Hexadecimal and Hexadecimal to Binary}
+
+\vspace{-\baselineskip}
+
+\begin{multicols}{2}
+
+  \begin{align*}
+    {1010111011}_{2} = \text{2BB}_{16} : \\
+          \hphantom{}10\hphantom{\ }1011\hphantom{\ }1011  \\
+    \text{\hphantom{0}2\hphantom{\ 000}B\hphantom{\ 000}B} \\
+  \end{align*}
+
+  \columnbreak
+
+  \begin{align*}
+    \text{10AF}_{16} = {1000010101111}_{2} : \\
+    \text{\hphantom{000}1\hphantom{\ 000}0\hphantom{\ 000}A\hphantom{\ 000}F} \\
+          \hphantom{}0001\hphantom{\ }0000\hphantom{\ }1010\hphantom{\ }1111  \\
+  \end{align*}
+
+\end{multicols}
+
+\subsubsection{Octal to Hexadecimal and Hexadecimal to Octal}
+
+Conversions between octal and hexadecimal can be performed by first converting to binary.
+
+\subsection{Integers in Binary}
+
+\begin{table}[htp]
+  \centering
+  \caption*{Counting in powers of \num{2}.}
+  \begin{tabular}{lcr}
+    \toprule
+    Prefix & Power of \num{2} & Value\\
+    \midrule
+    kibi & \( {2}^{10} \) &          1024 \\
+    mebi & \( {2}^{20} \) &       1048576 \\
+    gibi & \( {2}^{30} \) &    1073741824 \\
+    tebi & \( {2}^{40} \) & 1099511628000 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection{Overflow}
+
+In a computer, an integer is represented by a fixed number of bits.
+The maximum value that can be stored in an unsigned integer of \( n \) bits is \( 2^n - 1 \).
+It is possible that the addition of two \(n\)~\si{\bit} numbers yields a result that requires \( n+ 1 \) bits.
+
+In Java, the `overflow' bits are lost with no error.
+The remaining bits give the wrong answer.
+It is important to make sure the data type used is big enough for the values it will represent.
+
+\subsubsection{Two's Complement}
+
+In \SI{8}{\bit} arithmetic, \( 255 + 1 \) appears to be \num{0} due to overflow.
+In this case, \num{255} is behaving like \num{-1}.
+This leads to the `two's complement' representation of negative integers in binary.
+
+The two's complement representation of \( -x \) is equivalent to the unsigned binary representation of \( 2^n - x \).
+Another method to find the representation is to flip all the bits of the binary representation of \( x \) and add \num{1} to the least significant bit.
+
+Using two's complement, a signed binary integer of \( n \) bits can hold any value from \( - 2^{n-1} \) to \( 2^{n-1} - 1 \), inclusive.
+The most significant bit represents \( - 2^{n-1} \).
+If the number of bits in a signed number is increased, the new bits are given the same value as the most significant bit.
+This is known as sign extension.
+
+In Java, all integers are signed.
+
+\subsection{Real Numbers in Binary}
+
+\subsubsection{Fixed Point Decimal to Binary}
+
+The integral part is converted as usual.
+The fractional part is converted by doubling as follows.
+
+\vspace{-\baselineskip}
+
+\begin{align*}
+  {0.537}_{10} = {0.100010}_{2} : & \\
+  0.537 \times 2 &= \underline{1}.074 \\
+  0.074 \times 2 &= \underline{0}.148 \\
+  0.148 \times 2 &= \underline{0}.296 \\
+  0.296 \times 2 &= \underline{0}.592 \\
+  0.592 \times 2 &= \underline{1}.184 \\
+  0.184 \times 2 &= \underline{0}.368 \\
+\end{align*}
+
+\subsubsection{Fixed Point Binary to Decimal}
+
+\begin{align*}
+  {1101.0101}_{2} : & \\
+  1 \times 2 ^ {-4} &=            \hphantom{0}0.0625              \\
+  0 \times 2 ^ {-3} &=            \hphantom{0}0                   \\
+  1 \times 2 ^ {-2} &=            \hphantom{0}0.25                \\
+  0 \times 2 ^ {-1} &=            \hphantom{0}0                   \\
+  1 \times 2 ^   0  &=            \hphantom{0}1                   \\
+  0 \times 2 ^   1  &=            \hphantom{0}0                   \\
+  1 \times 2 ^   2  &=            \hphantom{0}4                   \\
+  1 \times 2 ^   3  &= \underline{\hphantom{0}8\hphantom{.00000}} \\
+                    &=           {\hphantom{}13.3125}_{10}        \\
+\end{align*}
+
+\subsubsection{Floating Point Numbers}
+
+Fixed point is convenient and intuitive, but has two major problems.
+\begin{enumerate}
+  \item Numerical precision --- only values that are multiples of the smallest used power of two can be represented.
+  \item Numerical range --- fractional precision comes at the expense of numerical range.
+\end{enumerate}
+
+Floating point representation in binary is similar to scientific notation in decimal.
+In binary, real numbers can be represented in the form \( \pm m \times 2 ^ e \).
+Floating point numbers consist of a sign bit (\( \pm \), \num{0} for positive or \num{1} for negative), a mantissa (\( m \), the significant bits) and an exponent (\( e \), two's complement signed binary).
+
+\begin{figure}[htp]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    S & Offset exponent, \( e' \) & Normalised mantissa, \( m' \) \\
+    \hline
+  \end{tabular}
+  \caption*{The stored representation of a floating point number.}
+\end{figure}
+
+Since the mantissa is normalised (unless the value is small enough to represent without an exponent), the leading bit is almost always \num{1}.
+It is therefore omitted from the stored representation.
+The exponent has a bias (offset) of \( 2^{n-1} - 1 \) added to it for engineering purposes.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Floating point data types in Java.}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Type & \multicolumn{4}{c}{Bits} & Bytes & Exponent bias \\
+    \cmidrule(l{0.25em}r{0.25em}){2-5}
+    & Sign & Mantissa & Exponent & Total & & \\
+    \midrule
+    \texttt{float}  & 1 & 23 &  8 & 32 & 4 &  127 \\
+    \texttt{double} & 1 & 52 & 11 & 64 & 8 & 1023 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+With the \SI{52}{\bit} mantissa of a \texttt{double} (and the additional hidden bit), \( 2^{53} \approx 8 \times {10}^{15} \).
+Hence, the \texttt{double} data type can be used to represent \num{15} significant decimal digits.
+
+In Java, special values are returned for floating point overflow and other unusual circumstances.
+For example, if the result is too large for the \texttt{double} data type, \texttt{Double.POSITIVE\_INFINITY} or \texttt{Double.NEGATIVE\_INFINITY} are returned.
+If the result is indistinguishable from zero but known to be negative, \texttt{-0.0} is returned.
+If the result is not a real number, \texttt{Double.NaN} is returned.
+
+\subsubsection{Numerical Precision}
+
+Floating point arithmetic loses accuracy in its less significant digits.
+This is an issue even in values of type \texttt{double}.
+
+It is a bad idea to use floating point representation for money --- i.e.\ with integral pounds and fractional pence --- as this will result in rounding errors.
+Taking \SI{0.10}[\text{\textsterling}]{} as an example, \( {0.10}_{10} = {0.0\overline{0011}}_{2} \).
+
+Since currency is inherently integral, integer types with suitable range, such as \texttt{int}, \texttt{long} or \texttt{java.math.BigInteger}, should be used to represent multiples of the smallest denomination.
