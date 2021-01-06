@@ -1,0 +1,160 @@
+\subsection{Levels of Programming Languages}
+
+High-level programming languages, such as Java, C, C++ and C\# are closer to the English language and, therefore, easier for humans to read and write.
+Code written in these languages is more concerned with problem-solving than implementation.
+Programmers are less likely to make errors when programming in these languages and do not need to worry about memory management and other complexities.
+
+Low-level languages, such as machine code, use instructions stored in memory (opcodes) and refer to specific locations in memory.
+Code written in these languages reflects the processes being used rather than the problem being solved.
+Machine language is difficult for humans to read and write.
+Since it runs directly on hardware, it is also hardware-specific.
+
+Assembly language is slightly higher than machine code.
+It uses mnemonics so that it can be more easily read or written by humans.
+This is used to translate high-level languages to machine code.
+
+\subsection{Language Processing Systems}
+
+To run on a computer, a program must be supplied in machine code.
+Programs written in high-level languages are converted to binary through a series of phases.
+
+\begin{enumerate}
+  \item Preprocessor (prepares high-level code for the compiler)
+  \item Compiler/interpreter (produces assembly/intermediate code)
+  \item Assembler (produces relocatable machine code)
+  \item Linker/loader (produces object code)
+\end{enumerate}
+
+The preprocessor organises and prepares the source code for the compiler.
+This includes importing packages, macro processing and file inclusion.
+
+The compiler reads the entire source code in one go and creates tokens.
+It checks the meaning of these tokens and generates intermediate assembly code.
+Alternatively, the interpreter reads the source statement by statement, converting each statement to intermediate code that is executed immediately.
+
+The assembler calculates relative addresses for jumps and produces relocatable machine code.
+
+The linker combines assembled parts into a whole.
+Alternatively, the loader places the code directly into memory.
+
+\subsection{High-Level Program Execution}
+
+A program written in a high-level language can be run in two different ways.
+
+\begin{enumerate}
+  \item Compiled into a program in the native machine language of the target machine
+  \item Directly interpreted and executed via simulation on the target machine
+\end{enumerate}
+
+\subsection{Compilation}
+
+A compiler converts source code into assembly, object or machine code that does the same thing as the original.
+Object code is usually relocatable, so it can later be linked or loaded.
+
+This is done just once for each program.
+Hardware features can be exploited to optimise object code so that it will run more quickly.
+
+However, this is more difficult than interpretation, as the compiler must understand the entire program in order to convert it.
+Compilers are also hardware-dependent, so cannot run on different platforms.
+
+A compiler runs on the same platform as the target machine.
+A cross-compiler can produce code that will run only on a separate platform.
+
+A compiler can be divided into a front-end and a back-end.
+Both perform their operations in a sequence of phases that each generate a data structure to be used by the following phase.
+
+\clearpage
+
+Front-end:
+\begin{enumerate}
+  \item Lexical analysis
+  \item Syntax analysis
+  \item Semantic analysis
+  \item Intermediate code generation
+\end{enumerate}
+
+Back-end:
+\begin{enumerate}[resume]
+  \item Optimisation
+  \item Code generation
+\end{enumerate}
+
+\subsubsection{Lexical Analysis}
+
+During lexical analysis, the compiler breaks the source code into meaningful words known as `lexemes' and generates a sequence of tokens from the lexemes.
+A lexeme is a word recognised by the compiler according to the language specification.
+This includes keywords, identifiers, operators etc.
+A token is an object describing a lexeme.
+Along with the value of the lexeme, it includes information about the type of the lexeme (keyword, identifier, operator etc.).
+
+\subsubsection{Syntax Analysis (Parsing)}
+
+During syntax analysis, the compiler interprets the structure of the source code.
+This is known as `parsing' and involves grouping tokens into higher-level constructs.
+This phase produces an abstract syntax tree (AST).
+
+This is also the phase where syntax errors are detected.
+If no error is found, the compiler continues to the semantic analysis phase.
+
+\subsubsection{Semantic Analysis}
+
+During semantic analysis, the compiler interprets the meaning of the AST.\@
+The compiler checks that the program is consistent with the rules of the source language.
+
+The compiler can deal with ambiguity in a number of ways.
+
+\begin{itemize}
+  \item Type inference (the compiler annotates nodes in the AST with inferred type information),
+  \item Type checking (the compiler checks that all values assigned to variables are of the correct type).
+  \item Symbol management (the compiler uses a symbol table to determine whether variables have been declared or whether multiple variables with the same name exist in the same scope).
+\end{itemize}
+
+Semantic analysis produces an annotated AST.
+
+\subsubsection{Intermediate Code Generation}
+
+During intermediate code generation, the compiler produces code in an intermediate language between that of the source code and machine language.
+
+\subsubsection{Optimisation}
+
+During optimisation, the compiler simplifies or removes unnecessary code.
+This allows the program to run more quickly or use fewer resources.
+
+\subsubsection{Code Generation}
+
+During code generation, the compiler maps the optimised intermediate code to the target machine language.
+
+\subsection{Interpretation}
+
+An interpreter is a program that follows the source code and performs appropriate actions accordingly.
+A CPU can be viewed as a hardware implementation of an interpreter for machine code.
+
+Interpreters begin execution immediately and facilitate interactive debugging and testing.
+A user can read and modify the values of variables and invoke procedures from the command line.
+Interpreted languages are not hardware-dependent.
+However, interpreted programs have slower execution than compiled programs.
+
+Compilers are compute-intensive and require more preparation time.
+Additionally, compiled programs are hardware-dependent.
+However, they can run very quickly.
+
+\subsection{Combined Compilation and Interpretation}
+
+Combined compilation and interpretation is a method by which programs are compiled to an intermediate language that can be interpreted efficiently.
+Execution of programs produced by this method is slower than pure compilation, but quicker than pure interpretation.
+
+Compilation for any platform requires only a single compiler that is independent of the target CPU.\@
+Interpretation of the intermediate language is delegated to the target CPU.
+
+Java was conceived as a language that uses combined compilation and interpretation.
+The \texttt{javac} compiler converts \texttt{.java} source code to \texttt{.class} bytecode, which is interpreted by the Java Runtime Environment (JRE) on the Java Virtual Machine (JVM).
+
+\subsection{Compilation and Execution on Virtual Machines}
+
+A virtual machine executes an instruction stream using software rather than hardware.
+Virtual machines emulate hardware using software and are, therefore, hardware-independent.
+Virtual machines are used in languages such as Java, Pascal and C\#.
+
+Java compilers generate bytecode that is interpreted by the JVM.
+This requires a JVM to exist on the target machine.
+The JVM may translate portions of bytecode to machine code at runtime via just-in-time (JIT) compilation if it finds those portions are used frequently.
