@@ -2,7 +2,7 @@
 
 \subsubsection{CPU and I/O Burst Cycle}
 
-Process scheduling is the process of selecting the next process in the ready queue to be executed by the CPU.
+Process scheduling is the process of selecting the next process in the ready queue to be executed by the CPU\@.
 Scheduling decisions take place when events interrupt the execution of a process.
 Such events include clock interrupts, I/O interrupts, system calls and signals.
 
@@ -21,7 +21,7 @@ The time taken by the dispatcher to stop one process and start another is known 
 \subsubsection{Levels of Scheduling}
 
 The long-term scheduler is responsible for admitting new processes to the ready queue.
-The short-term scheduler is responsible for selecting the next process to be given control of the CPU.
+The short-term scheduler is responsible for selecting the next process to be given control of the CPU\@.
 The mid-term scheduler is responsible for moving processes between suspended and non-suspended states.
 
 A non-preemptive scheduler allows an executing process to continue execution until it terminates, releases the CPU voluntarily (cooperative scheduling) or is blocked due to an event such as an I/O interrupt.
@@ -50,7 +50,7 @@ First come first serve (FCFS) is the simplest scheduling algorithm.
 Processes are given control of the CPU in the order that they request it.
 This is implemented with a FIFO ready queue.
 When a process enters the ready queue, its PCB is pushed to the tail.
-When the CPU becomes free, it is allocated to the process given by the PCB popped from the head of the queue.
+When the CPU becomes free, it is allocated to the process whose PCB is popped from the head of the queue.
 
 Using this algorithm, the average process waiting time can vary greatly.
 If a long process arrives before a short process, the waiting time for the second process will be long.
@@ -91,7 +91,7 @@ The preemptive SJF scheduling algorithm is known as the `shortest remaining time
 The SJF scheduling algorithm is a special case of the general priority scheduling algorithm.
 A priority is associated with each process and the CPU is allocated to the process with the highest priority.
 Priorities are indicated by a fixed range of numbers.
-Lower numbers are used for high priorities.
+Lower numbers are used for higher priorities.
 Processes with equal priorities are scheduled using FCFS.
 
 Priorities can be defined by internal criteria, such as time limits, memory requirements and number of open files, or external criteria, such as process importance, funds paid for computation or political factors.
@@ -121,7 +121,7 @@ Each process must wait no longer than \( \left( n - 1 \right) q \) until its nex
 For example, in a queue of five processes with a time quantum of \SI{20}{\milli\second}, each process is given up to \SI{20}{\milli\second} of CPU time every \SI{100}{\milli\second} or less, resulting in a waiting time of no more than \SI{80}{\milli\second} between CPU bursts.
 
 The performance of the RR scheduling algorithm depends heavily on the size of the time quantum.
-If the time quantum is longer than the process length, the algorithm would be no different from FCFS.
+If the time quantum is longer than the process length, the algorithm would be no different from FCFS\@.
 If the time quantum is too short, there would be a large number of expensive context switches.
 Ideally, the time quantum should be much larger than the context switch time.
 If the context switch time is \( n \)\si{\percent} of the time quantum, approximately \( n \)\si{\percent} of CPU time would be devoted to context switching.
