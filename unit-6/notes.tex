@@ -4,7 +4,7 @@ The \texttt{javac} compiler compiles Java source code in \texttt{.java} files to
 As long as there is a JVM on another platform, the bytecode can be run on that platform without recompilation.
 This feature is known as `portability'.
 
-The JRE loads Java bytecode files, verifies their internal consistency and executes their methods using the JVM.\@
+The JRE loads Java bytecode files, verifies their internal consistency and executes their methods using the JVM\@.
 Different CPUs or operating systems can run the same Java bytecode but use different JREs.
 
 \subsection{Stack Frames}
@@ -215,7 +215,7 @@ On the operand stack of method~\texttt{A}, this has the effect of
   \ldots, \textnormal{p0}, \textnormal{p1} \quad \rightarrow \quad \ldots, \textnormal{result}
 \end{equation*}
 
-Each frame has its own PC.\@
+Each frame has its own PC\@.
 While method~\texttt{B} is under execution, its PC is used.
 When execution returns to method~\texttt{A}, it resumes with its old PC value.
 The local variables of method~\texttt{A} are unchanged by method~\texttt{B}.
