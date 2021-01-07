@@ -39,10 +39,10 @@ They differ in speed, cost, size and volatility.
 
 \subsection{I/O Structure}
 
-A large portion of OS code is dedicated to the management of I/O.
+A large portion of OS code is dedicated to the management of I/O\@.
 Without I/O, computers would be useless.
 
-An I/O device interacts with the system via a `device controller' connected through a common bus to the CPU.
+An I/O device interacts with the system via a `device controller' connected through a common bus to the CPU\@.
 A small computer system interface (SCSI) controller is a piece of hardware that allows an SCSI storage device to communicate with the operating system via an SCSI bus.
 A device controller maintains some local buffer storage and a set of special-purpose registers.
 The device controller moves data between the peripheral device it controls and its local buffer storage.
@@ -65,7 +65,7 @@ There are three types of I/O mechanism.
 Programmed I/O requires the CPU to `poll' the status of the controller by repeatedly checking its status until it is ready to accept an I/O request.
 It then continues to check the status of the controller until the I/O operation is complete.
 
-This mechanism is very fast due to the direct involvement of the CPU.
+This mechanism is very fast due to the direct involvement of the CPU\@.
 However, this also prevents the CPU from working on other tasks that may be more important.
 
 \subsubsection{Interrupt-Driven I/O}
@@ -151,7 +151,7 @@ Operating system installations typically include
 
 \subsection{System Calls / OS Relationship}
 
-System calls are APIs for the services provided by the OS.
+System calls are APIs for the services provided by the OS\@.
 They are typically written in high-level languages such as C or C++.
 
 Typically, there is a number associated with each system call.
@@ -165,12 +165,12 @@ The goals and specifications of an OS can be affected by hardware and the type o
 User goals are that the OS should be convenient to use, easy to learn, reliable, safe and fast.
 System goals are that the OS should be easy to design, implement and maintain, as well as flexible, reliable, error-free and efficient.
 
-Early operating systems were produced in assembly language, then in system programming languages such as Algol and PL/I.
+Early operating systems were produced in assembly language, then in system programming languages such as Algol and PL/I\@.
 Nowadays they are written in C and C++.
 
 Modern operating systems actually use a combination of different languages.
 The lowest levels may be written in assembly, the main body in C, and system programs in C, C++, PERL, Python and shell scripts.
-operating systems written in higher-level languages are easier to port to other hardware, but they are also slower.
+Operating systems written in higher-level languages are easier to port to other hardware, but they are also slower.
 Emulation allows an OS to run on non-native hardware.
 
 \subsection{Operating System Structure}
@@ -197,7 +197,7 @@ This is dangerous, as application programs have the ability to access the lowest
 \subsubsection{More Complex or Non-Simple Structure}
 
 The Unix OS has a more complex structure.
-The Unix OS is limited by hardware functionality, has limited structuring, and consists of two separable parts.
+The Unix OS is limited by hardware functionality, has a limited structure, and consists of two separate parts.
 These are the system programs and the kernel.
 
 The kernel consists of everything below the system call interface and above the physical hardware.
@@ -217,13 +217,13 @@ While this is more structured and less dangerous, it prevents higher layers from
 
 \subsubsection{Microkernel Structure}
 
-Mach is an example of a microkernel OS.
+Mach is an example of a microkernel OS\@.
 Microkernel structure moves as much functionality from the kernel to the user space as possible.
 Communication between user modules takes place via messages passed through the kernel.
 
 Microkernel structures are easier to extend and port to new architectures.
 They are also more reliable and secure, since less code runs in kernel mode.
-However, performance is lost due to added communication between the user space and ther kernel space, as well as between user modules through the kernel.
+However, performance is lost due to added communication between the user space and the kernel space, as well as between user modules through the kernel.
 
 \subsubsection{Modular Approach}
 
@@ -277,7 +277,7 @@ Unix provides shell programs.
 \subsubsection{Job Control Language Interface}
 
 Job control language defines requirements for work submitted to a batch system.
-This is used for databases.
+This is used in database administration.
 
 \subsubsection{Graphical User Interface (GUI)}
 
