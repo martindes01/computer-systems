@@ -4,7 +4,7 @@ The \texttt{javac} compiler compiles Java source code in \texttt{.java} files to
 As long as there is a JVM on another platform, the bytecode can be run on that platform without recompilation.
 This feature is known as `portability'.
 
-The JRE loads Java bytecode files, verifies their internal consistency and executes their methods using the JVM.
+The JRE loads Java bytecode files, verifies their internal consistency and executes their methods using the JVM.\@
 Different CPUs or operating systems can run the same Java bytecode but use different JREs.
 
 \subsection{Stack Frames}
@@ -187,7 +187,7 @@ In Java bytecode, the source and destination of a jump must be within the same m
 It is not possible to jump to another method.
 
 Unconditional jumps are achieved with the \texttt{goto <2\_byte\_offset>} instruction.
-The operand is an \SI{2}{\byte} offset that is added to the address of the instruction to calculate the address of the next instruction to execute.
+The operand is a \SI{2}{\byte} offset that is added to the address of the instruction to calculate the address of the next instruction to execute.
 There exists a version of this instruction that takes a \SI{4}{\byte} operand to allow for larger jumps: \texttt{goto\_w <4\_byte\_offset>}.
 
 Conditional jumps are achieved with instructions of the form \texttt{ifeq <offset>} and \texttt{if\_icmpeq <offset>}.
@@ -196,29 +196,29 @@ Conditional jumps are achieved with instructions of the form \texttt{ifeq <offse
 
 \subsubsection{The Stack}
 
-If method \texttt{B} calls static method \texttt{A(p0, p1)}, and this method returns a result:
+If method \texttt{A} calls a static method \texttt{B(p0, p1)} that returns a result:
 \begin{enumerate}
-  \item method~\texttt{B} calculates the arguments on its operand stack,
-  \item a stack frame is constructed for method~\texttt{A},
+  \item method~\texttt{A} calculates the arguments on its operand stack,
+  \item a stack frame is constructed for method~\texttt{B},
   \begin{itemize}
-    \item the arguments are popped from the operand stack of method~\texttt{B},
-    \item the values are used to initialise the local variables \texttt{p0} and \texttt{p1} for method~\texttt{A},
+    \item the arguments are popped from the operand stack of method~\texttt{A},
+    \item the values are used to initialise the local variables \texttt{p0} and \texttt{p1} of method~\texttt{B},
   \end{itemize}
-  \item method~\texttt{A} calculates the result on its stack frame
-  \item the result is pushed to the operand stack of method~\texttt{B}, and
-  \item execution returns to method~\texttt{B}, discarding the stack frame of method~\texttt{A}.
+  \item method~\texttt{B} calculates the result on its stack frame
+  \item the result is pushed to the operand stack of method~\texttt{A}, and
+  \item execution returns to method~\texttt{A}, discarding the stack frame of method~\texttt{B}.
 \end{enumerate}
 
-On the operand stack of method~\texttt{B}, this has the effect of
+On the operand stack of method~\texttt{A}, this has the effect of
 
 \begin{equation*}
   \ldots, \textnormal{p0}, \textnormal{p1} \quad \rightarrow \quad \ldots, \textnormal{result}
 \end{equation*}
 
-Each frame has its own PC.
-While method~\texttt{A} is executed, its PC is used.
-When execution returns to method~\texttt{B}, it resumes with its old PC value.
-The local variables of method~\texttt{B} are unchanged by method~\texttt{A}.
+Each frame has its own PC.\@
+While method~\texttt{B} is under execution, its PC is used.
+When execution returns to method~\texttt{A}, it resumes with its old PC value.
+The local variables of method~\texttt{A} are unchanged by method~\texttt{B}.
 
 Linked frames have the effect of a return stack.
 A chain of linked frames in the JVM is officially known as a stack.
@@ -229,7 +229,7 @@ The class variables, instance variables and methods of a class may be used by ot
 Since classes are compiled separately, the compiler does not know the address of these items in other classes.
 Hence, the class, source file and bytecode file must share the same name to create a `symbolic reference'.
 
-In addition to class variables, instance variables and method definitions, each class in java has a runtime constant pool that contains read-only constants used in the class.
+In addition to class variables, instance variables and method definitions, each class in Java has a runtime constant pool that contains read-only constants used in the class.
 This includes literal constants, symbolic references to methods and their classes, types and more.
 
 Each pool entry has an index.
