@@ -1,0 +1,158 @@
+\subsection{Algorithm Design and Analysis}
+
+An algorithm is an effective method for solving a problem expressed as a finite sequence of instructions.
+Often, multiple algorithms exist for the same task.
+There are many criteria for choosing a suitable algorithm for a particular task, including efficiency, simplicity, clarity, elegance and proof.
+It is also necessary to consider whether the algorithm is always correct, always terminates or whether the problem can even be solved with an algorithm.
+
+In general, efficiency is achieved by finding a balance between many conflicting parameters, such as run time, response time, memory usage, bandwidth usage and power consumption.
+One very important issue is understanding how problems and algorithms grow in complexity.
+Although a solution may work very well for small problems, it is important to know how its performance may be affected if the problem becomes larger.
+
+It may be possible to improve code so that it runs quickly or uses less memory, but it may be the case that an algorithm will inherently perform worse as the amount of data increases.
+It may even be the case that the problem itself is inherently difficult and becomes more difficult as the size of the problem grows.
+Sometimes the problem can be modified so that it still satisfies the overall requirements, but behaves in a more manageable way.
+
+Algorithm efficiency can be considered in terms of time and space.
+
+Space (or bandwidth) complexity is not considered in the same way as computational complexity, since memory and bandwidth are limited by practical constraints.
+The bandwidth of a system can often be increased if necessary.
+
+Instead, computational complexity is usually considered in terms of `time complexity' -- a measure of how much computation is involved in solving a problem.
+It is not necessary to know quantitatively exactly how many times harder a problem will grow.
+Often a qualitative indication of complexity will suffice.
+
+\subsection{Time Complexity}
+
+There are two ways to determine the run time of an algorithm.
+
+The first method is to measure empirically.
+This involves benchmarking the algorithm using a representative set of inputs.
+This does not measure the complexity of the algorithm, rather the complexity of an implementation of the algorithm on a particular piece of hardware.
+
+The second method is to analyse theoretically the worst case scenario, by identifying the operations of the algorithm -- its time complexity.
+
+Time complexity is a measure of the number of operations that an algorithm must execute in terms of the size of the input or problem.
+Since it is the algorithm that is analysed, and not the implementation, time complexity is analysed using pseudocode.
+The time complexity \( \function{T}{n} \) of an algorithm is a function of the size \( n \) of its input.
+
+The following algorithm has time complexity \( \function{T}{n} = 2 n^2 \).
+It is quadratic because it has two nested loops that go through every element.
+It has a coefficient of \num{2} because there are two operations in the nested statement.
+
+\begin{lstlisting}[
+  float = htp,
+  title = {Matrix-vector multiplication of size \( n \).},
+]
+for i=0...n-1:
+    for j=0...n-1:
+        x[i] = x[i] + A[i][j] * b[j]
+\end{lstlisting}
+
+\subsection{Complexity Class and Big-O Notation}
+
+Usually, it is not necessary to know the exact time complexity.
+It is sufficient to know the complexity class, which ignores constant factors or overheads, and expressions of lower orders.
+This focusses on performance for large \( n \).
+
+Class complexity is expressed using `big-O notation'.
+For example, \( \function{O}{n^2} \) is ``of the order of \( n^2 \)''.
+
+\begin{table}[htp]
+  \centering
+  \caption*{Corresponding time complexities and complexity classes.}
+  \begin{tabular}{ll}
+    \toprule
+    Time complexity & Complexity class \\
+    \midrule
+    \( \function{T}{n} = n                      \) & \( \function{O}{n}   \) \\
+    \( \function{T}{n} = n + 2                  \) & \( \function{O}{n}   \) \\
+    \( \function{T}{n} = 2 n^2                  \) & \( \function{O}{n^2} \) \\
+    \( \function{T}{n} = 10 n^3                 \) & \( \function{O}{n^3} \) \\
+    \( \function{T}{n} = 5 \left( n + 2 \right) \) & \( \function{O}{n}   \) \\
+    \( \function{T}{n} = 1000                   \) & \( \function{O}{1}   \) \\
+    \( \function{T}{n} = n^2 + n + 1            \) & \( \function{O}{n^2} \) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+To determine complexity class, it is often sufficient to count the number of loops and the number of times they are executed.
+
+\begin{table}
+  \centering
+  \caption*{Common complexity classes.}
+  \begin{tabular}{ll}
+    \toprule
+    Complexity class & Name \\
+    \midrule
+    \( \function{O}{1}                  \) & Constant    \\
+    \( \function{O}{\textup{log}_2 n}   \) & Logarithmic \\
+    \( \function{O}{n}                  \) & Linear      \\
+    \( \function{O}{n \textup{log}_2 n} \) & Log Linear  \\
+    \( \function{O}{n^2}                \) & Quadratic   \\
+    \( \function{O}{n^3}                \) & Cubic       \\
+    \( \function{O}{2^n}                \) & Exponential \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Polynomial classes are described as `tractable'.
+Exponential classes are described as `intractable' -- they can execute with small amounts of data, but cannot with large amounts.
+
+The binary search algorithm (on a sorted array) has class \( \function{O}{\textup{log}_2 n} \) because the size of the loop is halved on each iteration.
+
+\begin{lstlisting}[
+  float = htp,
+  title = {Binary search algorithm.}
+]
+left = 0; right = n-1
+while left < right:
+    mid = (left + right) / 2
+    if x[mid] < v:
+        left = mid + 1
+    else:
+        right = mid
+if x[left] == v:
+    return left
+else:
+    return -1
+\end{lstlisting}
+
+The total algorithm complexity is determined by the complexities of its components.
+Sequential algorithm phases are summed, and the maximum term is considered.
+Function or method calls are multiplied.
+
+For example, this following altered matrix-vector multiplication algorithm has two sequential phases and a total complexity of \( \function{O}{n} + \function{O}{n^2} \Rightarrow \function{O}{n^2} \).
+
+\begin{lstlisting}[
+  float = htp,
+  title = {Initialisation and matrix-vector multiplication of size \( n \).},
+]
+for i=0...n-1:
+    x[i] = 0
+for i=0...n-1:
+    for j=0...n-1:
+        x[i] = x[i] + A[i][j] * b[j]
+\end{lstlisting}
+
+The following iterative binary search algorithm uses a call to a method of logarithmic complexity within a fixed loop.
+It has complexity \( \function{O}{n} \times \function{O}{\textup{log}_2 n} \Rightarrow \function{O}{n \textup{log}_2 n} \).
+
+\begin{lstlisting}[
+  float = htp,
+  title = {Iterative binary search.},
+]
+for i=0...n-1:
+    binary_search(x, v[i])
+\end{lstlisting}
+
+\subsection{Algorithm and Problem Complexity}
+
+Algorithm complexity is the worst-case run time of an algorithm.
+This an upper bound and is the most informative complexity.
+
+A problem has a complexity class of \( \function{O}{\function{f}{n}} \) if there exists an algorithm of complexity class \( \function{O}{\function{f}{n}} \) to solve it.
+Sometimes lower bounds are considered.
+
+Problems solvable in polynomial time (PTIME or P) are assumed to be tractable.
+If a solution can be guessed and then checked in polynomial time, the problem is solvable in non-deterministic polynomial time (NP).
