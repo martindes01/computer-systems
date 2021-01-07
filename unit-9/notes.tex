@@ -4,10 +4,10 @@ Early computers used magnetic tape decks for storage and used paper tape for inp
 Each program was keyed in by hand to control the required system function.
 There was a distinct lack of monitors.
 The `operators' controlled the loading of magnetic tapes, fed in cards and paper tape, and maintained the system.
-This `operation' was laborious, expensive, tedious and error-prone.
+This `operation' was tedious, expensive and error-prone.
 
 As computers became faster and more powerful, the role of the operators became a limiting factor.
-An automated system was required to free the operators from the mundane tasks.
+An automated system was required in order to free the operators mundane tasks.
 Such a system is known as an `operating system'.
 
 \subsection{Operating System (OS)}
@@ -21,7 +21,7 @@ It provides a convenient interface for executing user programs, and hides the co
 From the perspective of the system, the OS is intimately involved with the hardware and acts as a resource manager for CPU time, memory, file storage, I/O devices etc.
 Requests for these resources may be numerous and conflicting.
 It also acts as a control system between I/O devices and user programs.
-It manages the execution to prevent errors and improper use, such as one program attempting to view the memory of another.
+It manages execution to prevent errors and improper use, such as one program attempting to view the memory of another.
 
 \subsection{Components of a Computer System}
 
@@ -50,7 +50,7 @@ The most frequently used functions of the OS are stored in its `kernel'.
 \subsubsection{Serial Processing}
 
 Serial processing was used in the earliest computers.
-This relied on human operators rather than an OS.
+This relied on human operators rather than an OS\@.
 Users had access to the computer in `series'.
 
 One problem with serial processing concerned scheduling.
@@ -78,7 +78,7 @@ Despite this overhead, simple batch systems improved the utilisation of the proc
 In uniprogrammed systems, the processor executes a program until it reaches an I/O instruction.
 It must then wait for the I/O instruction to complete before it continues.
 
-In multiprogrammed systems, when one jobs must wait for I/O to complete, the processor can switch to another job.
+In multiprogrammed systems, when one job must wait for I/O to complete, the processor can switch to another job.
 
 \subsubsection{Time Sharing Systems}
 
@@ -114,7 +114,7 @@ On Unix systems, the first system process is `init'.
 Once all these processes are loaded, the OS waits for events to occur.
 
 Events such as a user clicking a mouse button or a program attempting to access a file are known as `interrupts'.
-Hardware may trigger an interrupt by sending a signal to the CPU.
+Hardware may trigger an interrupt by sending a signal to the CPU\@.
 Software triggers an interrupt by executing a special operation known as a `system call'.
 
 The CPU reacts to an interrupt by suspending its current execution, immediately transferring execution to a fixed address (usually the starting address of the service routine for the interrupt), executes the interrupt service routine, and finally resumes execution where it was originally interrupted.
@@ -214,10 +214,10 @@ System call APIs specify a set of functions that are available to an application
 They describe the parameters to pass to each function, and the values that are returned.
 The programmer accesses the API via a library provided by the OS.
 
-A Java API exists for programs that run on the JVM.
+A Java API exists for programs that run on the JVM\@.
 The JVM itself uses the system calls of its particular platform.
 
 System call APIs are used for program portability.
-A program using the API can be compiled and run on any system that supports the API.
+A program using the API can be compiled and run on any system that supports the API\@.
 Invoking system calls directly is usually more difficult.
 Using a system call API is similar to implementing an interface.
