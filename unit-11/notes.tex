@@ -4,7 +4,7 @@ A process is a program in execution.
 A program is a passive entity stored on the disk, whereas a process is an active entity.
 A program becomes a process when its executable file is loaded into memory.
 
-A program may be started through a GUI or CLI.
+A program may be started through a GUI or CLI\@.
 One program may consist of several processes.
 For example, there may be one process for each user or instance.
 
@@ -22,7 +22,7 @@ Processes are represented by three main components.
 The execution context is essential for process switching.
 
 A process can be an execution environment for other code.
-For example, the JVM executes as a process that interprets loaded Java code and performs instructions on behalf of the code.
+For example, the JVM executes as a process that interprets loaded Java code and performs instructions on behalf of it.
 
 \subsection{Process Structure}
 
@@ -128,7 +128,7 @@ Queuing diagrams are used to represent flows of processes and resources.
 
 \subsubsection{Types of Scheduler}
 
-A short-term scheduler (or CPU scheduler) selects which process should be executed next and allocates a CPU.
+A short-term scheduler (or CPU scheduler) selects which process should be executed next and allocates a CPU\@.
 Sometimes this is the only scheduler in a system.
 It is invoked frequently and must be fast.
 
@@ -154,14 +154,14 @@ The context of a process is represented by its PCB.
 The time required to perform a context switch is pure overhead; the system does no useful work while switching.
 More complex operating systems and process control blocks require more time for a context switch.
 The time required is dependent upon hardware support.
-Some hardware provides multiple sets of registers per CPU.
+Some hardware provides multiple sets of registers per CPU\@.
 This allows multiple contexts to be loaded simultaneously.
 
 \subsubsection{Dispatch Events}
 
 Context switches (dispatch events) are triggered by clock interrupts.
 These occur after a set time interval, typically between \SIlist{3;10}{\milli\second}.
-The execution of processes is interrupted and control returns to the OS.
+The execution of processes is interrupted and control returns to the OS\@.
 The current process is moved to the ready queue.
 The frequency of such an interrupt is an important system parameter used to balance the overhead of context switching and the responsiveness of the system.
 
@@ -238,7 +238,7 @@ The program may perform different instructions in either of these cases.
 For example, the child process may execute the \texttt{exec()} system call, which takes a program name as a parameter.
 This system call replaces the content of the child process image with a process image of the specified program.
 
-The \texttt{exec()} system call has a number of variations with different suffixes that describe what parameters are passed to the new process image..
+The \texttt{exec()} system call has a number of variations with different suffixes that describe what parameters are passed to the new process image.
 These variations are \texttt{execl()}, \texttt{execle()}, \texttt{execlp()}, \texttt{execv()}, \texttt{execve()} and \texttt{execvp()}.
 
 \begin{itemize}
@@ -250,7 +250,7 @@ These variations are \texttt{execl()}, \texttt{execle()}, \texttt{execlp()}, \te
 
 \subsection{Process Waiting}
 
-A parent may use the system call \texttt{waitpid()} to wait for the exit of a child process.
+A parent may use the system call \texttt{waitpid()} to wait for the termination of a child process.
 
 \subsection{Process Termination}
 
@@ -299,8 +299,8 @@ It has its own system stack.
 \subsubsection{OS Execution within User Processes}
 
 The user address space includes kernel functions.
-System functions may be called from within the process by switching to kernel mode.
-No context switching is required as the system functions occur within the same process.
+System functions may be called from within a process by switching to kernel mode.
+No context switching is required as the system functions execute within the same process.
 The dispatcher executes context switches outside of processes.
 
 \subsubsection{Process-Based OS}
