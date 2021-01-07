@@ -118,8 +118,8 @@ There are two types of conditional jump instruction.
 Jump instructions of the form \texttt{ifXX} pop one value from the stack and compare it to zero.
 Jump instructions of the form \texttt{if\_cmpXX} pop two values from the stack and compare them to each other.
 
-For example, \texttt{ifeq N} would pop a value from the stack and jump to location \( N \) if the value is zero.
-The instruction \texttt{if\_cmpeq N} would pop two values from the stack and jump to location \( N \) if they are equal.
+For example, \texttt{ifeq N} pops a value from the stack and jumps to location \( N \) if the value is zero.
+The instruction \texttt{if\_cmpeq N} pops two values from the stack and jumps to location \( N \) if they are equal.
 
 \begin{table}[htp]
   \centering
