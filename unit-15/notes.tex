@@ -106,60 +106,60 @@ Instead, intelligent decisions are made when allocating resources.
 \subsubsection{The Resource Matrix System}
 
 Resources and process that require them can be represented using vectors and matrices.
-The system resource vector \( \mathbf{R} \) is a vector of the total number of instances of each resource in the system.
+The system resource vector \( \mathbf{r} \) is a vector of the total number of instances of each resource in the system.
 
 \begin{equation*}
-  \mathbf{R} = \left[ r_1, r_2, \ldots, r_m \right]
+  \mathbf{r} = \left[ r_1, r_2, \ldots, r_n \right]
 \end{equation*}
 
-The available resource vector \( \mathbf{V} \) is a vector of all available resources (resources that are not in use).
+The available resource vector \( \mathbf{v} \) is a vector of all available resources (resources that are not in use).
 
 \begin{equation*}
-  \mathbf{V} = \left[ v_1, v_2, \ldots, v_m \right]
+  \mathbf{v} = \left[ v_1, v_2, \ldots, v_n \right]
 \end{equation*}
 
 The claim matrix \( \mathbf{C} \) represents the resource requirement of each process.
-An element \( c_{ij} \) is the number of instances of resource \( j \) required by process \( i \).
-Each row \( \mathbf{C}_i \) represents the total resource claim of process \( i \).
+An element \( c_{pr} \) is the number of instances of resource \( r \) required by process \( p \).
+Each row \( \mathbf{c}_p \) represents the total resource claim of process \( p \).
 
 \begin{equation*}
   \mathbf{C} = \begin{bmatrix}
-    c_{11} & c_{12} & \ldots & c_{1m} \\
-    c_{21} & c_{22} & \ldots & c_{2m} \\
+    c_{11} & c_{12} & \ldots & c_{1n} \\
+    c_{21} & c_{22} & \ldots & c_{2n} \\
     \vdots & \vdots & \ddots & \vdots \\
-    c_{n1} & c_{n2} & \ldots & c_{nm} \\
+    c_{m1} & c_{m2} & \ldots & c_{mn} \\
   \end{bmatrix}
 \end{equation*}
 
 The allocation matrix \( \mathbf{A} \) represents the resource allocation of each process.
-An element \( a_{ij} \) is the number of instances of resource \( j \) allocated to process \( i \).
-Each row \( \mathbf{A}_i \) represents the total resource allocation of process \( i \).
+An element \( a_{pr} \) is the number of instances of resource \( r \) allocated to process \( p \).
+Each row \( \mathbf{a}_p \) represents the total resource allocation of process \( p \).
 
 \begin{equation*}
   \mathbf{A} = \begin{bmatrix}
-    a_{11} & a_{12} & \ldots & a_{1m} \\
-    a_{21} & a_{22} & \ldots & a_{2m} \\
+    a_{11} & a_{12} & \ldots & a_{1n} \\
+    a_{21} & a_{22} & \ldots & a_{2n} \\
     \vdots & \vdots & \ddots & \vdots \\
-    a_{n1} & a_{n2} & \ldots & a_{nm} \\
+    a_{m1} & a_{m2} & \ldots & a_{mn} \\
   \end{bmatrix}
 \end{equation*}
 
 All the resources in the system are either available or allocated.
 
 \begin{equation*}
-  \mathbf{R}_j = \mathbf{V}_j + \sum_i \mathbf{A}_{ij} \quad \forall j
+  r_r = v_r + \sum_p a_{pr} \quad \forall r
 \end{equation*}
 
 No process may claim more instances of a resource than exist in the system.
 
 \begin{equation*}
-  \mathbf{C}_{ij} \le \mathbf{R}_j \quad \forall i, j
+  c_{pr} \le r_r \quad \forall p, r
 \end{equation*}
 
 No process is allocated more instances of a resource than it claims.
 
 \begin{equation*}
-  \mathbf{A}_{ij} \le \mathbf{C}_{ij} \quad \forall i, j
+  a_{pr} \le c_{pr} \quad \forall p, r
 \end{equation*}
 
 \subsubsection{Process Initiation Denial}
@@ -167,10 +167,10 @@ No process is allocated more instances of a resource than it claims.
 A new process \( \left( n + 1 \right) \) is initiated only if the sum of claims of the new process and all the currently running processes can be met by the system.
 
 \begin{equation*}
-  \mathbf{R}_j \ge \mathbf{C}_{\left( n + 1 \right) j} + \sum_i \mathbf{C}_{ij} \quad \forall j
+  r_r \ge c_{\left( n + 1 \right) r} + \sum_{p = 1}^n c_{pr} \quad \forall r
 \end{equation*}
 
-The deadlock avoidance scheme assumes the worst possible scenario --- that all processes will demand their resources at the same time.
+This deadlock avoidance scheme assumes the worst possible scenario --- that all processes will demand their resources at the same time.
 
 \subsubsection{Resource Allocation Denial}
 
@@ -180,7 +180,7 @@ A process is only allocated a resource if the system will remain in a safe state
 A system is in a safe state if any of the participating processes can run to completion with the resources available, i.e.\ the difference between the requirement and allocation of any process can be met with the resources available.
 
 \begin{equation*}
-  \mathbf{C}_{ij} - \mathbf{A}_{ij} \le \mathbf{V}_j \quad \forall j
+  c_{pr} - a_{pr} \le v_r \quad \forall r
 \end{equation*}
 
 Deadlock avoidance is less restrictive than deadlock prevention since resources can be allocated out of order.
@@ -193,9 +193,9 @@ The algorithm for deadlock detection is as follows.
   \item Unmark (assume deadlocked, mark with T) all processes and define a matrix \( \mathbf{Q} \) that represents the future requests of each process.
   \item Mark (assume complete, mark with F) all processes that have zero resources allocated to them.
   These processes have reached completion.
-  \item Initialise a temporary vector \( \mathbf{W} \) equal to the available resource vector \( \mathbf{V} \).
-  \item Find a process \( i \) that is unmarked (assumed deadlocked, marked with T) such that the future requests of the process can be met by the currently available resources (\( \mathbf{Q}_{ij} \le \mathbf{W}_k \quad \forall j \)).
-  \item If such a process is found, update each resource \( j \) in the currently available resources \( \mathbf{W} \) as if the resources allocated to the process have been freed (\( \mathbf{W}_j = \mathbf{W}_j + \mathbf{A}_{ij} \quad \forall j \)), and mark (assume complete, mark with F) process \( i \).
+  \item Initialise a temporary vector \( \mathbf{w} \) equal to the available resource vector \( \mathbf{v} \).
+  \item Find a process \( p \) that is unmarked (assumed deadlocked, marked with T) such that the future requests of the process can be met by the currently available resources (\( q_{pr} \le w_r \quad \forall r \)).
+  \item If such a process is found, update each resource \( r \) in the currently available resources \( \mathbf{w} \) as if the resources allocated to the process have been freed (\( w_r \mapsto w_r + a_{pr} \quad \forall r \)), and mark (assume complete, mark with F) process \( p \).
   Repeat from step \num{4}.
   \item If no such process is found, continue to step \num{7}.
   \item All unmarked (marked with T) processes are deadlocked processes.
