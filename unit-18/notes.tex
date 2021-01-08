@@ -11,7 +11,7 @@ It therefore relies on and enhances the network layer services.
 
 TCP provides reliable ordered delivery with congestion control, flow control and connection setup.
 UDP provides unreliable unordered delivery.
-It is a ``best-effort'' extension of IP, meaning that it provides no guarantee of delay or bandwidth --- delay and packet loss are dependent upon traffic in the network.
+It is a ``best-effort'' extension of IP, meaning that it provides no guarantee of delay or bandwidth; delay and packet loss are dependent upon traffic in the network.
 
 \subsection{Multiplexing and Demultiplexing}
 
@@ -45,7 +45,7 @@ Non-persistent HTTP web servers have a different socket for each request.
 
 UDP is connectionless; there is no handshaking between a UDP sender and receiver, and each UDP segment is handled independently.
 UDP segments may be lost or delivered out of order.
-UDP is used in multimedia streaming applications, which are loss-tolerant and rate-sensitive, and DNS.
+UDP is used in multimedia streaming applications, which are loss-tolerant and rate-sensitive, and DNS\@.
 Reliable transfer over UDP can be achieved by adding reliability functionality at the application layer, but this requires application-specific error recovery.
 This is used in the Quick UDP Internet Connections (QUIC) protocol.
 
@@ -91,7 +91,7 @@ At the receiver, the packets are extracted into a message that is delivered to t
 If an underlying channel may flip bits in a packet, a checksum can be used to check bits.
 Acknowledgements (ACKs) are sent from the receiver to the sender to indicate that the packet was received correctly.
 Negative acknowledgements (NAKs) indicate that the received packet contained errors.
-The sender retransmits the packet if it receives a NAK.
+The sender retransmits the packet if it receives a NAK\@.
 
 \subsubsection[RDT With Corrupted Acknowledgements (RDT2.1)]{Reliable Data Transfer With Corrupted Acknowledgements (RDT2.1)}
 
@@ -108,14 +108,14 @@ Both the sender and receiver must manage twice as many states as they must remem
 
 \subsubsection[RDT Without Negative Acknowledgements (RDT2.2)]{Reliable Data Transfer Without Negative Acknowledgements (RDT2.2)}
 
-This uses the same functionality as RDT2.1 using only ACKs.
+This achieves the same functionality as RDT2.1 using only ACKs.
 The receiver responds with an ACK containing the sequence number of the last correctly received packet.
 If the sender receives a duplicate ACK, it retransmits the current packet.
 
 \subsubsection[RDT Over a Channel with Errors and Losses (RDT3.0)]{Reliable Data Transfer Over a Channel with Errors and Losses (RDT3.0)}
 
 Assuming the underlying channel can also lose data packets, the use of checksums, sequence numbers, acknowledgements and retransmissions is not sufficient.
-The sender must wait a reasonable amount of time for an ACK.
+The sender must wait a reasonable amount of time for an ACK\@.
 If no ACK is received in this time, the current packet is retransmitted.
 If the ACK was delayed or lost, the retransmitted packet will be a duplicate.
 This is already handled by sequence numbers.
@@ -145,20 +145,20 @@ It is connection-oriented --- handshaking initialises the sender and receiver st
 \end{figure}
 
 The sequence number of a TCP segment is the index of the first byte of data it contains.
-The acknowledgement number of a TCP segment is the sequence number of the next byte expected from the other host.
+The acknowledgement number of a TCP segment is the sequence number of the next segment expected from the other host.
 This is known as `cumulative acknowledgement'.
-The TCP specification does not state how out of order segments must be handled.
+The TCP specification does not state how out-of-order segments must be handled.
 This is decided by the implementation.
-Typically, out of order segments are kept.
+Typically, out-of-order segments are kept.
 
 \subsubsection{TCP Round-Trip Time and Timeout}
 
-The TCP timeout interval should be longer than the RTT.
+The TCP timeout interval should be longer than the RTT\@.
 However, the RTT varies.
 A timeout interval that is too short results in premature timeout and unnecessary retransmissions.
 A timeout value that is too long will result in a slow reaction to segment loss.
 
-RTT can be estimated using a sample RTT.
+RTT can be estimated using a sample RTT\@.
 This is the measured time between segment transmission and acknowledgement receipt, ignoring retransmissions.
 Since the sample RTT will vary, an exponential weighted moving average is used.
 
@@ -246,8 +246,8 @@ Before exchanging data, the sender and receiver exchange a `handshake' through w
 \end{figure}
 
 When a TCP connection is closed, the client and server both close their side of the connection by sending a TCP segment with a FIN bit of \num{1}.
-When a host receives a FIN message, it replies with an ACK.
-When the host is ready to close the connection it sends another FIN message and receives an ACK.
+When a host receives a FIN message, it replies with an ACK\@.
+When the host is ready to close the connection it sends another FIN message and receives an ACK\@.
 The TCP connection is now closed.
 Simultaneous FIN exchanges can be handled.
 
