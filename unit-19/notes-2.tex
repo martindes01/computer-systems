@@ -75,11 +75,11 @@ When a node~\(x\) receives a new estimate from its neighbour, it updates its own
 Under natural conditions, the estimate \(\functionsub{D}{x}{y}\) converges to the actual least cost \(\functionsub{d}{x}{y}\).
 
 The distance-vector algorithm is iterative and asynchronous.
-Each local iteration is caused by a local link cost change or a distance-vector update message from its neighbour.
+Each local iteration is caused by a local link cost change or a distance-vector update message from one of its neighbours.
 The node updates its routing info and recalculates its distance vector.
 It notifies its neighbours only when its distance-vector changes.
 
-One drawback of the distance-vector algorithm is that an increase in link cost does not trigger notification message.
+One drawback of the distance-vector algorithm is that an increase in link cost does not trigger a notification message.
 The network continues to operate as if cost had not increased.
 
 \begin{figure}[htp]
