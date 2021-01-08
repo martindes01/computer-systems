@@ -1,0 +1,123 @@
+\subsection{The Internet}
+
+The Internet consists of billions of connected computing devices.
+End systems are also known as `hosts' and run network applications.
+Computers are connected via communication links, which can be fibre optic, copper, radio or satellite.
+End systems and different networks are connected to routers and packet switches that forward chunks of data known as `packets'.
+
+The Internet is a network of networks and interconnected Internet service providers (ISPs).
+The sending and receiving of messages is controlled by protocols such as TCP, IP, HTTP, Skype and 802.11.
+A set of standards exists to help manage the Internet.
+Proposals for standards and protocols are published as requests for comments (RFCs), which are made available to key stakeholders to be reviewed and standardised.
+The Internet Engineering Taskforce (IETF) is the governing body that oversees the development of the Internet.
+
+The Internet is also an infrastructure that provides services to applications.
+These services and applications include web, VoIP, email, games, e-commerce and social networks.
+It also provides a programming interface to applications.
+Web hooks allow applications to connect to the Internet.
+
+Residential, institutional and mobile access networks each have end systems connected to an edge router.
+The bandwidth of a connection is affected by the hardware and connection used.
+Radio links are shared, whereas an Ethernet cable is dedicated.
+
+Client and server hosts, and servers in data centres form the network edge.
+Access networks are the communication links between devices.
+These may be wired or wireless.
+The interconnected routers that connect the access networks are known as the `network core'.
+
+Hosts break application messages into smaller chunks known as `packets' and transmit them to the access network.
+The speed at which the packet is transmitted to the access network is the link transmission rate, which is also known as `link capacity' or `link bandwidth'.
+The packet transmission delay when a packet of length \( L \)~bits is transmitted into a link with transmission rate \( R \)~bits per second is \( \frac{L}{R} \)~seconds.
+
+The network core forwards packets from one router to the next across links that form a path between source and destination.
+Each packet is transmitted at full link capacity.
+Routing algorithms in the network core determine the source to destination route taken by packets.
+Routers forward packets from their input to their appropriate output.
+
+\subsection{Distributed Systems}
+
+A distributed system is one in which hardware or software components located at networked computers communicate and coordinate their actions by only passing messages.
+Distributed networks allow for high concurrency.
+There is no global notion of the correct time in a distributed network; there is only relative time between computers.
+Each component in a network may fail independently.
+The failure of one component does not affect the other components.
+
+\subsection{Internet, Intranet and Firewalls}
+
+The Internet is a distributed system that enables users all over the world to make use of its services.
+Some highly connected links in the Internet are known as backbones.
+These have high link capacity and can be connected via satellite link.
+
+An intranet is part of the Internet that is separately administered and uses a firewall to enforce its own local security policies.
+Users in an intranet share data by means of file services.
+
+A firewall is a network security system that monitors and controls incoming and outgoing network traffic according to predetermined security rules.
+A firewall establishes a barrier between a trusted internal network and an untrusted external network, such as the Internet.
+Firewalls may be network-based or host-based, including network-layer or packet filters and application-layer firewalls.
+
+\subsection{Network Principles}
+
+Networking is concerned with sending messages over a carrier.
+\begin{itemize}
+  \item Latency is the term given to any kind of delay that occurs during data communication over a network
+  \item Bandwidth is the transmission capacity of a computer network or telecommunication system
+  \item Speed is the rate at which data is able to move
+\end{itemize}
+
+A logical unit of data transmitted via a network is known as a message.
+A message of arbitrary length is divided into packets before transmission.
+A packet is a bit stream of restricted length.
+It includes not only the data, but also relevant addressing information.
+
+\subsection{Switching Schemes}
+
+A network is a set of nodes connected by circuits.
+In order to transmit information between two nodes, a switching scheme is required.
+\begin{itemize}
+  \item Broadcast --- no switching, data is transmitted throughout the network
+  \item Circuit switching --- source and destination are connected through a switch at an exchange
+  \item Packet switching --- a store-and-forward network with a computer at each end
+\end{itemize}
+
+\subsubsection{Circuit Switching}
+
+End-to-end resources are allocated to create a reserved connection between source and destination.
+The resources are dedicated; there is no sharing.
+Full bandwidth circuit-like performance is guaranteed.
+Circuit segments remain idle if not used for a connection.
+This transmission scheme is traditionally used in telephone networks.
+
+\subsubsection{Packet Switching}
+
+Packet switching is a store-and-forward transmission scheme that allows more users to use the network.
+Packets are transmitted to a router, where they are stored in a queue, waiting for an output link.
+The entire packet must arrive at the router before it can be transmitted through the next link.
+
+The delay for transmission of an \( L \)~bit packet through an \( R \)~bits per second link is \( \frac{L}{R} \)~seconds.
+This is the `one-hop transmission delay'.
+Assuming no propagation delay, the end-to-end delay for transmission from source to destination through one router is \( 2 \frac{L}{R} \).
+In general, the delay is \( N \frac{L}{R} \), where \( N \) is the number of links and, therefore, \( N - 1 \) is the number of routers.
+
+If the arrival rate to a router exceeds its transmission rate for a period of time, the packets will queue, waiting to be transmitted through a link.
+Additionally, packets can be dropped (lost) if the memory (buffer) is filled.
+
+\subsection{Internet Structure (Network of Networks)}
+
+End systems connect to the Internet via access ISPs.
+These may be residential, company or university ISPs.
+In turn, access ISPs must be interconnected so that any two hosts can communicate.
+The resulting network is very complex.
+Its evolution has been driven by economics and national policies.
+
+Connecting each access ISP to every other access ISP is not feasible.
+This would require \( \function{O}{n^2} \) connections.
+An alternative is to connect each access ISP to a global ISP.
+There would be an economic agreement between customer and provider ISPs.
+However, if one global ISP is a viable business, there will exist competitors, which must in turn be interconnected.
+
+Such global ISPs are connected to each other through internet exchange points (IXPs) or peering links.
+Regional networks also exist to connect groups of access networks to global ISPs.
+Large Internet companies, such as Google and Microsoft, run their own content provider networks to bypass connections and provide services and content closer to end systems.
+
+The result is small number of well-connected large networks.
+These are `Tier~1' commercial ISPs that offer national and international coverage, and private content provider networks that connect data centres to the Internet to bypass Tier~1 and regional ISPs.
