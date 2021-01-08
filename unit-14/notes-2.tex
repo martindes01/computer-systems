@@ -21,7 +21,7 @@ A process with multiple threads can perform more than one task at a time.
 \end{figure}
 
 Most applications are multithreaded.
-Applications are suitable for threading if they need several threads of control.
+Applications are suitable for multithreading if they need several threads of control.
 Examples include web browsers with separate threads for each tab, extension or native utility, as well as any GUI application, so that user events can still be handled while the main thread is performing a computation.
 
 Multithreading is also used in systems that provide services, such as web servers and databases.
@@ -37,7 +37,7 @@ Concurrency can be achieved without parallelism.
 
 \subsection{Multicore Systems and Multithreading}
 
-Amdahl's law describes the ratio of performance of a process running on a single processor to the process running on multiple processors in terms of the proportion \(f\) of code that is parallelisable and the number \(N\) of parallel processors.
+Amdahl's law describes the ratio of the performance of a process running on a single processor to its performance running on multiple processors in terms of the proportion \(f\) of its code that is parallelisable and the number \(N\) of parallel processors.
 This ratio is known as `speedup'.
 The difference \(\left(1 - f\right)\) is the proportion of the code that is inherently serial.
 
@@ -47,12 +47,12 @@ The difference \(\left(1 - f\right)\) is the proportion of the code that is inhe
 
 Even a small amount of serial code has a noticeable impact on the overall performance.
 There are also overheads to parallelism that are not considered by Amdahl's law.
-latency is introduced due to memory access and cache load, for example.
+Latency is introduced by memory access and cache loading, for example.
 
-Parallel program introduces a number of challenges.
+Parallel programming introduces a number of challenges.
 Pressure is placed on system designers to make better use of multiple cores and to write scheduling algorithms that allow parallel execution.
 It is difficult both to modify existing programs and to design new programs to make use of multithreading.
-This involves identifying tasks that can be divided in separate, concurrent and, ideally, independent tasks, balancing tasks to achieve efficiency, splitting data and identifying data dependencies.
+This involves identifying tasks that can be divided into separate, concurrent and, ideally, independent tasks, balancing tasks to achieve efficiency, splitting data, and identifying data dependencies.
 It is also difficult to test and debug parallel execution since it is non-deterministic.
 
 \subsection{Multithreading Models}
@@ -61,7 +61,7 @@ Threads are used through a thread library that exists on the OS or virtual machi
 Operating systems and programming languages provide APIs for creating and managing threads.
 
 Threads may exist at either the user or kernel levels.
-user threads are managed above the kernel.
+User threads are managed above the kernel.
 Kernel threads are managed by the OS directly.
 Threads can be mapped to processes using three models.
 
@@ -93,7 +93,7 @@ This is unpredictable and difficult to debug.
 
 Memory consistency errors occur when different threads have inconsistent views of the same data.
 This can be solved through synchronisation, which creates a happens-before relationship between methods and statements.
-This guarantees that memory writes by one statement are visible to another.
+This guarantees that memory written by one statement is visible to another.
 
 Two invocations of a synchronised method on the same object cannot be interleaved.
 All other threads are blocked until the synchronised thread is complete.
