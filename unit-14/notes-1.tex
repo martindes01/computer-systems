@@ -4,7 +4,7 @@
 
 A computer system typically has multiple users or user applications working independently.
 The OS must protect the memory of one process from interference from another process.
-It also interleaves the execution of processes to maximise resource utilisation and responsiveness of the system.
+It also interleaves the execution of processes to maximise the resource utilisation and responsiveness of the system.
 To do so, it must preserve the state of each process so that its execution may resume.
 
 Concurrent execution of processes was originally intended solely for the maximisation of utilisation due to the great cost of computer systems, but nowadays it is intended to satisfy the expectations of users who wish to execute multiple tasks concurrently.
@@ -13,7 +13,7 @@ The problem is that these processes do not always work independently.
 They may compete for access to resources, such as devices, files and data.
 They may cooperate through messages, shared memory and files.
 They may also be distributed such that millions of users are reading and updating information at the same time.
-This is the case for social networking systems, banking and online shopping.
+This is the case for social networking, banking and online shopping systems.
 
 It is also necessary that applications can interleave multiple independent but potentially conflicting tasks.
 An application with a graphical user interface (GUI) should not freeze when it is performing a time consuming task.
@@ -35,7 +35,7 @@ Concurrency may be employed in the context of sharing resources amongst multiple
 
 \begin{description}
   \item[atomic operation] A function or action implemented as a sequence of one or more instructions that appears to be indivisible; that is, no other process can see an intermediate state or interrupt the operation.
-  The sequence of instruction is guaranteed to execute as a group, or not execute at all, having no visible effect on the system state.
+  The sequence of instructions is guaranteed to execute as a group, or not execute at all, having no visible effect on the system state.
   Atomicity guarantees isolation from concurrent processes.
   \item[critical section] A section of code within a process that requires access to shared resources and that must not be executed while another process is in a corresponding section of code.
   \item[deadlock] A situation in which two or more processes are unable to proceed because each is waiting for one of the others to do something.
@@ -58,7 +58,7 @@ In a uniprocessor system, the relative execution of processes cannot be predicte
 
 \subsubsection{Difficulties of Concurrency}
 
-Difficulties arise in the sharing of global resources, the optimal allocation of resources by the OS, and most importantly in the coordination of parallel and asynchronous processes so that they behave correctly.
+Difficulties arise in the sharing of global resources, the optimal allocation of resources by the OS, and, most importantly, in the coordination of parallel and asynchronous processes so that they behave correctly.
 They must produce the same results if they are executed concurrently as they would if they were executed consecutively.
 The debugging of concurrent programming errors is difficult because observed behaviour is non-deterministic (dependent upon timings of other processes on the machine).
 It is therefore difficult to identify and reproduce.
@@ -79,7 +79,7 @@ In order to manage the issues raised by concurrency, the OS must be able to keep
       \item Timing of processes may be affected
     \end{itemize} & \begin{itemize}
       \item Mutual exclusion
-      \item Deadlock (renewable resource)
+      \item Deadlock (reusable resource)
       \item Starvation
     \end{itemize} \\
     Processes indirectly aware of each other (e.g.\ shared object) & Cooperation by sharing & \begin{itemize}
@@ -87,7 +87,7 @@ In order to manage the issues raised by concurrency, the OS must be able to keep
       \item Timing of processes may be affected
     \end{itemize} & \begin{itemize}
       \item Mutual exclusion
-      \item Deadlock (renewable resource)
+      \item Deadlock (reusable resource)
       \item Starvation
       \item Data coherence
     \end{itemize} \\
@@ -131,13 +131,13 @@ Race conditions can occur due to
 In order to avoid race conditions, it is necessary to control the concurrent execution of critical sections.
 This is achieved through strict serialisation, or mutual exclusion, causing the critical sections to behave as atomic operations.
 
-An entry protocol is executed before a critical section.
+An entry protocol is executed before entering a critical section.
 The process requests permission to enter the critical section.
 The process may have to wait for entry to be granted.
 It must communicate that it has entered the critical section.
 
 A process is able to complete the execution of its critical section, even if it is preempted or interrupted.
-An exit protocol is executed after a critical section.
+An exit protocol is executed after exiting a critical section.
 The process communicates to other processes that it has left the critical section.
 
 It is important that the scope and length of critical sections is kept as small as possible.
@@ -145,7 +145,7 @@ Large critical sections can be detrimental to the efficiency and throughput of a
 
 \subsubsection{Deadlock and Starvation}
 
-Enforcing mutual exclusion creates the problems of deadlocks --- processes waiting forever for each other to free resources --- and starvation --- a process waiting forever to be granted entry to its critical section.
+Enforcing mutual exclusion creates the problems of deadlocks (processes waiting forever for each other to free resources) and starvation (a process waiting forever to be granted entry to its critical section).
 Implementations of mutual exclusion must account for these problems.
 Critical sections must be as small as possible and processes must spend as little time as possible in a critical section.
 
@@ -213,7 +213,7 @@ A process busy-waiting may prevent another process holding the lock from executi
 This solution imposes a strict alternation between two processes; a process waits for its turn.
 A token is used as a shared variable.
 This is usually a process ID set by the previous process that indicates which process is next to enter.
-A process busy-waits until the token is its own process ID.
+A process busy-waits until the token is its own process ID\@.
 When the process exits the critical section, it sets the token to the next process ID.
 
 This solution guarantees mutual exclusion because there is no longer a race condition on the lock.
@@ -238,8 +238,8 @@ However, they use busy-waiting and may still cause starvation and deadlocks.
 
 Some systems may execute critical sections regardless, then detect whether problems have occurred.
 If so, the changes are undone.
-Sometimes such problems do not occur very often, and doing a lot of work to fix a problem when it occurs is overall more efficient than doing a little work every time to avoid the problem.
-This is used in database systems.
+Sometimes such problems do not occur very often, and doing a lot of work to fix the problems when they do occur is overall more efficient than doing a little work every time to avoid them.
+This approach is used in database systems.
 
 In other cases, it may be acceptable to have errors caused by concurrency.
 
