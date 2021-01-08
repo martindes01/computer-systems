@@ -41,7 +41,7 @@ A link on an end-to-end path that constrains the throughput is known as a `bottl
 
 Network protocols define a set of guidelines that allow network devices to communicate effectively.
 A protocol defines the sequence of messages that should be exchanged and the format of the data in the messages.
-Protocols are implemented by a pair of software modules in the sending and receiving systems.
+Protocols are implemented by pairs of software modules in the sending and receiving systems.
 
 A transport protocol transmits a message from a sender to a receiver.
 A process that wishes to send a message passes it to the transport protocol module.
@@ -126,7 +126,7 @@ The responsibility of the transport layer is to provide a network-independent me
 The destination ports at a host computer are defined by software and are attached to processes.
 Port~\num{25} is used for email.
 
-The transport layer delivers messages to destination specified by transport addresses.
+The transport layer delivers messages to destinations specified by transport addresses.
 A transport address comprises a network address and a port number.
 In the Internet, every host system is assigned an Internet Protocol (IP) address that identifies it and the subnet to which it is connected.
 
@@ -134,7 +134,7 @@ In the Internet, every host system is assigned an Internet Protocol (IP) address
 
 In datagram packet delivery, it is the responsibility of the receiver to indicate if there is a problem with transmission.
 The network retains no information after it has been delivered.
-The sequence of packets may take different routes from hose to destination, so they may arrive out of sequence.
+The sequence of packets may take different routes from host to destination, so they may arrive out of sequence.
 Datagrams contain the full network addresses of the source and destination.
 The network layer of the Internet uses datagram delivery.
 
