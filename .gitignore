@@ -1,0 +1,9 @@
+# Ignore auxiliary LaTeX files
+*.aux
+*.log
+*.out
+
+# Ignore miscellaneous work folders
+_resources/
+exercises/
+quizzes/
